@@ -9,9 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: git.rokkon.com/io-pipeline/gitea-runner:latest
-      options: --network host
 
     steps:
       - name: Checkout code
@@ -32,6 +29,8 @@ jobs:
         env:
           GITEA_USER: ${{ secrets.GIT_USER }}
           GITEA_TOKEN: ${{ secrets.GIT_TOKEN }}
+          # Override MySQL connection to use Docker gateway IP instead of localhost
+          QUARKUS_DATASOURCE_JDBC_URL: jdbc:mysql://172.17.0.1:3307/pipeline_account_test
         run: ./gradlew clean build test --no-daemon --info --configuration-cache
 
       - name: Upload test results
