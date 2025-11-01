@@ -9,6 +9,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    container:
+      image: git.rokkon.com/io-pipeline/gitea-runner:latest
+      options: --network host
 
     steps:
       - name: Checkout code
