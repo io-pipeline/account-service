@@ -17,6 +17,11 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Verify Docker is available
+        run: |
+          docker --version
+          docker ps
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
@@ -24,14 +29,23 @@ jobs:
         env:
           GITEA_USER: ${{ secrets.GIT_USER }}
           GITEA_TOKEN: ${{ secrets.GIT_TOKEN }}
-        run: ./gradlew clean build test --no-daemon
+        run: ./gradlew clean build test --no-daemon --info
 
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: test-results
-          path: build/test-results/
+          path: |
+            build/test-results/
+            build/reports/tests/
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: build/reports/
 
       - name: Publish to Gitea Maven
         if: gitea.ref == 'refs/heads/main'
