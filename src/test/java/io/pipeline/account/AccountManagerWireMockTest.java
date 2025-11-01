@@ -121,9 +121,7 @@ public class AccountManagerWireMockTest {
                 .build();
 
         // Verify exception is thrown
-        assertThrows(io.grpc.StatusRuntimeException.class, () -> {
-            accountService.getAccount(request);
-        });
+        assertThrows(io.grpc.StatusRuntimeException.class, () -> accountService.getAccount(request));
     }
 
     @Test
