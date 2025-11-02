@@ -20,14 +20,21 @@ jobs:
       - name: Start test services
         run: |
           pwd
-          # Copy init script to absolute path for DinD compatibility
-          cp src/test/resources/init-mysql.sql /tmp/init-mysql.sql
-          ls -la /tmp/init-mysql.sql
+          # Copy init script to current directory for DinD compatibility
+          cp src/test/resources/init-mysql.sql ./init-mysql-ci.sql
+          ls -la ./init-mysql-ci.sql
           
           cd src/test/resources
-          export MYSQL_INIT_SCRIPT_PATH=/tmp/init-mysql.sql
+          export MYSQL_INIT_SCRIPT_PATH=../../../init-mysql-ci.sql
           docker compose -f compose-test-services.yml up -d
           echo "Test services starting in background..."
+          
+          # Check if MySQL failed and show logs
+          sleep 5
+          if ! docker ps | grep -q pipeline-mysql-test; then
+            echo "MySQL container failed to start, showing logs:"
+            docker logs pipeline-mysql-test || true
+          fi
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
