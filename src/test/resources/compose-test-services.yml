@@ -11,8 +11,6 @@ networks:
 volumes:
   mysql_test_data:
     driver: local
-  mysql_init_scripts:
-    driver: local
   minio_test_data:
     driver: local
   kafka_test_data:
@@ -43,9 +41,7 @@ services:
       - "3307:3306"  # Test port (dev uses 3306)
     volumes:
       - mysql_test_data:/var/lib/mysql
-      # Use named volume for init scripts (populated before compose starts)
-      # This works in DinD environments where bind mounts may not work correctly
-      - mysql_init_scripts:/docker-entrypoint-initdb.d:ro
+      - ./init-mysql.sql:/docker-entrypoint-initdb.d/01-init-mysql.sql
     labels:
       # Quarkus devservices label to prevent automatic MySQL devservice creation
       quarkus-dev-service-mysql: test
