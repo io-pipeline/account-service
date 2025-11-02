@@ -31,11 +31,14 @@ jobs:
           # Build custom MySQL image
           docker build -f Dockerfile.mysql-ci -t mysql-with-init:ci .
           
-          # Update compose to use custom image
+          # Update compose to use custom image and fix MySQL URL for DinD
           sed 's/image: mysql:8.0/image: mysql-with-init:ci/' compose-test-services.yml > compose-test-services-ci.yml
           
           # Remove the volume mount line since init script is now baked into image
           sed -i '/MYSQL_INIT_SCRIPT_PATH/d' compose-test-services-ci.yml
+          
+          # Fix Apicurio MySQL URL for DinD environment (use Docker gateway IP and host port)
+          sed -i "s|mysql-test:3306|172.17.0.1:3307|g" compose-test-services-ci.yml
           
           # Start services with CI compose file
           docker compose -f compose-test-services-ci.yml up -d
