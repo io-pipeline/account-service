@@ -41,7 +41,8 @@ services:
       - "3307:3306"  # Test port (dev uses 3306)
     volumes:
       - mysql_test_data:/var/lib/mysql
-      - ./init-mysql.sql:/docker-entrypoint-initdb.d/01-init-mysql.sql
+      # Use INIT_SQL_PATH environment variable for DinD compatibility, fallback to relative path for local
+      - ${INIT_SQL_PATH:-./init-mysql.sql}:/docker-entrypoint-initdb.d/01-init-mysql.sql
     labels:
       # Quarkus devservices label to prevent automatic MySQL devservice creation
       quarkus-dev-service-mysql: test
