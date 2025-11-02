@@ -27,17 +27,21 @@ jobs:
           cd src/test/resources
           export MYSQL_INIT_SCRIPT_PATH=./init-mysql-ci.sql
           
-          # Test if Docker can access the file by trying a simple mount
-          echo "Testing file mount accessibility..."
-          docker run --rm -v $(pwd)/init-mysql-ci.sql:/test.sql alpine:latest ls -la /test.sql || echo "File mount test failed"
+          # Start services
+          docker compose -f compose-test-services.yml up -d
+          echo "Test services starting in background..."
           
-          # Try to start MySQL container alone first to see specific error
-          echo "Starting MySQL container..."
-          docker compose -f compose-test-services.yml up mysql-test --no-deps || echo "MySQL startup failed"
+          # Wait for MySQL to be ready
+          sleep 15
           
-          # Show logs immediately
-          echo "MySQL logs:"
-          docker logs pipeline-mysql-test 2>&1 || echo "No MySQL logs available"
+          # Check if init script was executed by testing database permissions
+          echo "Testing database permissions..."
+          docker exec pipeline-mysql-test mysql -u pipeline -ppassword -e "SHOW DATABASES;" || echo "Pipeline user cannot connect"
+          docker exec pipeline-mysql-test mysql -u pipeline -ppassword -e "USE apicurio_registry; SHOW TABLES;" || echo "Pipeline user cannot access apicurio_registry"
+          
+          # Check what's in the init directory
+          echo "Checking init directory contents:"
+          docker exec pipeline-mysql-test ls -la /docker-entrypoint-initdb.d/ || echo "Cannot check init directory"
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
