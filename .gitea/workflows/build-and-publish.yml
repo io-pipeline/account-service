@@ -17,21 +17,42 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Verify Docker is available
+      - name: Start test services
         run: |
-          docker --version
-          docker ps
+          cd src/test/resources
+          docker compose -f compose-test-services.yml up -d
+          echo "Test services starting in background..."
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build and test with Gradle
+      - name: Build with Gradle (services warming up in background)
         env:
           GITEA_USER: ${{ secrets.GIT_USER }}
           GITEA_TOKEN: ${{ secrets.GIT_TOKEN }}
-          # Override MySQL connection to use Docker gateway IP instead of localhost
+        run: ./gradlew clean build --no-daemon --info --configuration-cache
+
+      - name: Wait for test services to be healthy
+        run: |
+          echo "Waiting for services to be ready..."
+          timeout 60 bash -c 'until docker ps --filter "health=healthy" --filter "name=pipeline-mysql-test" | grep -q healthy; do sleep 2; done' || true
+          docker ps --filter "name=pipeline-"
+          echo "Services status:"
+          docker compose -f src/test/resources/compose-test-services.yml ps
+
+      - name: Run tests with Gradle
+        env:
+          GITEA_USER: ${{ secrets.GIT_USER }}
+          GITEA_TOKEN: ${{ secrets.GIT_TOKEN }}
+          # Override MySQL connection to use Docker gateway IP for container-to-container communication
           QUARKUS_DATASOURCE_JDBC_URL: jdbc:mysql://172.17.0.1:3307/pipeline_account_test
-        run: ./gradlew clean build test --no-daemon --info --configuration-cache
+        run: ./gradlew test --no-daemon --info --configuration-cache
+
+      - name: Stop test services
+        if: always()
+        run: |
+          cd src/test/resources
+          docker compose -f compose-test-services.yml down -v
 
       - name: Upload test results
         if: always()
