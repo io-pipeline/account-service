@@ -20,28 +20,26 @@ jobs:
       - name: Start test services
         run: |
           pwd
-          # Copy init script directly to compose directory for DinD compatibility
-          cp src/test/resources/init-mysql.sql src/test/resources/init-mysql-ci.sql
-          ls -la src/test/resources/init-mysql-ci.sql
           
+          # Create a custom MySQL image with the init script baked in (avoids bind mount issues)
           cd src/test/resources
-          export MYSQL_INIT_SCRIPT_PATH=./init-mysql-ci.sql
+          cat > Dockerfile.mysql-ci << 'EOF'
+          FROM mysql:8.0
+          COPY init-mysql.sql /docker-entrypoint-initdb.d/01-init-mysql.sql
+          EOF
           
-          # Start services
-          docker compose -f compose-test-services.yml up -d
+          # Build custom MySQL image
+          docker build -f Dockerfile.mysql-ci -t mysql-with-init:ci .
+          
+          # Update compose to use custom image
+          sed 's/image: mysql:8.0/image: mysql-with-init:ci/' compose-test-services.yml > compose-test-services-ci.yml
+          
+          # Remove the volume mount line since init script is now baked into image
+          sed -i '/MYSQL_INIT_SCRIPT_PATH/d' compose-test-services-ci.yml
+          
+          # Start services with CI compose file
+          docker compose -f compose-test-services-ci.yml up -d
           echo "Test services starting in background..."
-          
-          # Wait for MySQL to be ready
-          sleep 15
-          
-          # Check if init script was executed by testing database permissions
-          echo "Testing database permissions..."
-          docker exec pipeline-mysql-test mysql -u pipeline -ppassword -e "SHOW DATABASES;" || echo "Pipeline user cannot connect"
-          docker exec pipeline-mysql-test mysql -u pipeline -ppassword -e "USE apicurio_registry; SHOW TABLES;" || echo "Pipeline user cannot access apicurio_registry"
-          
-          # Check what's in the init directory
-          echo "Checking init directory contents:"
-          docker exec pipeline-mysql-test ls -la /docker-entrypoint-initdb.d/ || echo "Cannot check init directory"
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
@@ -72,7 +70,7 @@ jobs:
         if: always()
         run: |
           cd src/test/resources
-          docker compose -f compose-test-services.yml down -v
+          docker compose -f compose-test-services-ci.yml down -v || docker compose -f compose-test-services.yml down -v
 
       - name: Upload test results
         if: always()
