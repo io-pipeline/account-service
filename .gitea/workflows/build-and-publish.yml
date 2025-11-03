@@ -36,7 +36,6 @@ jobs:
       - name: Build and test
         env:
           REPOS_PAT: ${{ secrets.REPOS_PAT }}
-          COMPOSE_FILE: src/test/resources/compose-test-services-ci.yml
         run: ./gradlew clean build --no-daemon
 
       - name: Upload test results and reports

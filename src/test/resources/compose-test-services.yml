@@ -1,6 +1,5 @@
-# This file defines the infrastructure services for the AUTOMATED TEST environment.
-# The ports are intentionally offset from the development environment to prevent conflicts.
-# The canonical port allocation strategy is defined in /docs/architecture/endpoints/Port_allocations.md
+# Test infrastructure services - works in both local and CI/DinD environments
+# Uses init-db service approach to avoid bind mount issues in Docker-in-Docker
 
 name: pipeline-test-services
 
@@ -11,11 +10,7 @@ networks:
 volumes:
   mysql_test_data:
     driver: local
-  minio_test_data:
-    driver: local
   kafka_test_data:
-    driver: local
-  redis_test_data:
     driver: local
 
 services:
@@ -41,7 +36,6 @@ services:
       - "3307:3306"  # Test port (dev uses 3306)
     volumes:
       - mysql_test_data:/var/lib/mysql
-      - ${MYSQL_INIT_SCRIPT_PATH:-./init-mysql.sql}:/docker-entrypoint-initdb.d/01-init-mysql.sql
     labels:
       # Quarkus devservices label to prevent automatic MySQL devservice creation
       quarkus-dev-service-mysql: test
@@ -53,6 +47,32 @@ services:
       timeout: 5s
       retries: 10
       start_period: 10s
+
+  # Init service to create Apicurio database (schema auto-created by Apicurio)
+  # This approach works in both local and CI/DinD environments
+  # Runs in parallel with Apicurio startup - Apicurio will wait for DB to be ready
+  init-db:
+    image: mysql:8.0
+    depends_on:
+      mysql-test:
+        condition: service_healthy
+    command: >
+      bash -c "
+      until mysql -h mysql-test -u root -prootpassword -e 'SELECT 1' >/dev/null 2>&1; do
+        echo 'Waiting for MySQL...';
+        sleep 1;
+      done;
+      mysql -h mysql-test -u root -prootpassword -e \"
+      CREATE DATABASE IF NOT EXISTS apicurio_registry;
+      GRANT ALL PRIVILEGES ON apicurio_registry.* TO 'pipeline'@'%';
+      FLUSH PRIVILEGES;
+      \"
+      "
+    networks:
+      - pipeline-test-network
+    labels:
+      # Mark as Quarkus devservice so it's recognized by compose devservices
+      quarkus-dev-service-init-db: test
 
   # Redpanda for Kafka-compatible messaging (test instance - faster than Kafka!)
   kafka-test:
@@ -97,6 +117,9 @@ services:
       - pipeline-test-network
     ports:
       - "8082:8080"     # Test port (dev uses 8081)
+    depends_on:
+      mysql-test:
+        condition: service_healthy
     environment:
       APICURIO_DATASOURCE_URL: 'jdbc:mysql://mysql-test:3306/apicurio_registry'
       APICURIO_DATASOURCE_USERNAME: 'pipeline'
@@ -110,9 +133,6 @@ services:
       LOG_LEVEL: 'INFO'
       QUARKUS_HTTP_CORS_ORIGINS: '*'
       QUARKUS_PROFILE: 'prod'
-    depends_on:
-      mysql-test:
-        condition: service_healthy
     labels:
       # Wait for Apicurio to be ready before considering service started
       io.quarkus.devservices.compose.wait_for.logs: ".*Listening on.*"
