@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Gradle Test Executor 3" tests="1" skipped="0" failures="1" errors="0" timestamp="2025-11-03T21:13:35.559Z" hostname="f597339b4b79" time="14.59">
+  <properties/>
+  <testcase name="failed to execute tests" classname="Gradle Test Executor 3" time="14.59">
+    <failure message="org.gradle.api.internal.tasks.testing.TestSuiteExecutionException: Could not execute test class 'io.pipeline.account.AccountActiveFieldTest'." type="org.gradle.api.internal.tasks.testing.TestSuiteExecutionException">org.gradle.api.internal.tasks.testing.TestSuiteExecutionException: Could not execute test class 'io.pipeline.account.AccountActiveFieldTest'.
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:56)
+	at java.base@21.0.9/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base@21.0.9/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.gradle.internal.dispatch.MethodInvocation.invokeOn(MethodInvocation.java:77)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:28)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:19)
+	at org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:33)
+	at org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:88)
+	at jdk.proxy1/jdk.proxy1.$Proxy4.processTestClass(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker$2.run(TestWorker.java:177)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.executeAndMaintainThreadName(TestWorker.java:126)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:103)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:63)
+	at org.gradle.process.internal.worker.child.ActionExecutionWorker.execute(ActionExecutionWorker.java:56)
+	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:122)
+	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:72)
+	at app//worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
+	at app//worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
+Caused by: java.lang.RuntimeException: io.quarkus.builder.BuildException: Build failure: Build failed due to errors
+	[error]: Build step io.quarkus.devservices.deployment.compose.ComposeDevServicesProcessor#config threw an exception: java.lang.IllegalStateException: Services named [init-db] do not exist, but wait conditions have been defined for them.
+	at io.quarkus.devservices.deployment.compose.ComposeProject.discoverServiceInstances(ComposeProject.java:293)
+	at io.quarkus.devservices.deployment.compose.ComposeProject.start(ComposeProject.java:178)
+	at io.quarkus.devservices.deployment.compose.ComposeDevServicesProcessor.startCompose(ComposeDevServicesProcessor.java:262)
+	at io.quarkus.devservices.deployment.compose.ComposeDevServicesProcessor.config(ComposeDevServicesProcessor.java:122)
+	at java.base/java.lang.invoke.MethodHandle.invokeWithArguments(MethodHandle.java:733)
+	at io.quarkus.deployment.ExtensionLoader$3.execute(ExtensionLoader.java:872)
+	at io.quarkus.builder.BuildContext.run(BuildContext.java:255)
+	at org.jboss.threads.ContextHandler$1.runWith(ContextHandler.java:18)
+	at org.jboss.threads.EnhancedQueueExecutor$Task.doRunWith(EnhancedQueueExecutor.java:2651)
+	at org.jboss.threads.EnhancedQueueExecutor$Task.run(EnhancedQueueExecutor.java:2630)
+	at org.jboss.threads.EnhancedQueueExecutor.runThreadBody(EnhancedQueueExecutor.java:1622)
+	at org.jboss.threads.EnhancedQueueExecutor$ThreadBody.run(EnhancedQueueExecutor.java:1589)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+	at org.jboss.threads.JBossThread.run(JBossThread.java:501)
+
+	at io.quarkus.runner.bootstrap.AugmentActionImpl.runAugment(AugmentActionImpl.java:375)
+	at io.quarkus.runner.bootstrap.AugmentActionImpl.createInitialRuntimeApplication(AugmentActionImpl.java:292)
+	at io.quarkus.runner.bootstrap.AugmentActionImpl.createInitialRuntimeApplication(AugmentActionImpl.java:60)
+	at io.quarkus.test.junit.AppMakerHelper.getStartupAction(AppMakerHelper.java:253)
+	at io.quarkus.test.junit.classloading.FacadeClassLoader.getOrCreateRuntimeClassLoader(FacadeClassLoader.java:587)
+	at io.quarkus.test.junit.classloading.FacadeClassLoader.getQuarkusClassLoader(FacadeClassLoader.java:484)
+	at io.quarkus.test.junit.classloading.FacadeClassLoader.loadClass(FacadeClassLoader.java:366)
+	at java.base/java.lang.Class.forName0(Native Method)
+	at java.base/java.lang.Class.forName(Class.java:536)
+	at java.base/java.lang.Class.forName(Class.java:515)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor.loadClass(JUnitPlatformTestClassProcessor.java:184)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor.access$100(JUnitPlatformTestClassProcessor.java:62)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor$CollectAllTestClassesExecutor.execute(JUnitPlatformTestClassProcessor.java:120)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor$CollectAllTestClassesExecutor.execute(JUnitPlatformTestClassProcessor.java:110)
+	at org.gradle.api.internal.tasks.testing.junit.AbstractJUnitTestClassProcessor.processTestClass(AbstractJUnitTestClassProcessor.java:61)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:54)
+	... 17 more
+Caused by: io.quarkus.builder.BuildException: Build failure: Build failed due to errors
+	[error]: Build step io.quarkus.devservices.deployment.compose.ComposeDevServicesProcessor#config threw an exception: java.lang.IllegalStateException: Services named [init-db] do not exist, but wait conditions have been defined for them.
+	at io.quarkus.devservices.deployment.compose.ComposeProject.discoverServiceInstances(ComposeProject.java:293)
+	at io.quarkus.devservices.deployment.compose.ComposeProject.start(ComposeProject.java:178)
+	at io.quarkus.devservices.deployment.compose.ComposeDevServicesProcessor.startCompose(ComposeDevServicesProcessor.java:262)
+	at io.quarkus.devservices.deployment.compose.ComposeDevServicesProcessor.config(ComposeDevServicesProcessor.java:122)
+	at java.base/java.lang.invoke.MethodHandle.invokeWithArguments(MethodHandle.java:733)
+	at io.quarkus.deployment.ExtensionLoader$3.execute(ExtensionLoader.java:872)
+	at io.quarkus.builder.BuildContext.run(BuildContext.java:255)
+	at org.jboss.threads.ContextHandler$1.runWith(ContextHandler.java:18)
+	at org.jboss.threads.EnhancedQueueExecutor$Task.doRunWith(EnhancedQueueExecutor.java:2651)
+	at org.jboss.threads.EnhancedQueueExecutor$Task.run(EnhancedQueueExecutor.java:2630)
+	at org.jboss.threads.EnhancedQueueExecutor.runThreadBody(EnhancedQueueExecutor.java:1622)
+	at org.jboss.threads.EnhancedQueueExecutor$ThreadBody.run(EnhancedQueueExecutor.java:1589)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+	at org.jboss.threads.JBossThread.run(JBossThread.java:501)
+
+	at io.quarkus.builder.Execution.run(Execution.java:139)
+	at io.quarkus.builder.BuildExecutionBuilder.execute(BuildExecutionBuilder.java:78)
+	at io.quarkus.deployment.QuarkusAugmentor.run(QuarkusAugmentor.java:160)
+	at io.quarkus.runner.bootstrap.AugmentActionImpl.runAugment(AugmentActionImpl.java:371)
+	... 32 more
+Caused by: java.lang.IllegalStateException: Services named [init-db] do not exist, but wait conditions have been defined for them.
+	at io.quarkus.devservices.deployment.compose.ComposeProject.discoverServiceInstances(ComposeProject.java:293)
+	at io.quarkus.devservices.deployment.compose.ComposeProject.start(ComposeProject.java:178)
+	at io.quarkus.devservices.deployment.compose.ComposeDevServicesProcessor.startCompose(ComposeDevServicesProcessor.java:262)
+	at io.quarkus.devservices.deployment.compose.ComposeDevServicesProcessor.config(ComposeDevServicesProcessor.java:122)
+	at java.base/java.lang.invoke.MethodHandle.invokeWithArguments(MethodHandle.java:733)
+	at io.quarkus.deployment.ExtensionLoader$3.execute(ExtensionLoader.java:872)
+	at io.quarkus.builder.BuildContext.run(BuildContext.java:255)
+	at org.jboss.threads.ContextHandler$1.runWith(ContextHandler.java:18)
+	at org.jboss.threads.EnhancedQueueExecutor$Task.doRunWith(EnhancedQueueExecutor.java:2651)
+	at org.jboss.threads.EnhancedQueueExecutor$Task.run(EnhancedQueueExecutor.java:2630)
+	at org.jboss.threads.EnhancedQueueExecutor.runThreadBody(EnhancedQueueExecutor.java:1622)
+	at org.jboss.threads.EnhancedQueueExecutor$ThreadBody.run(EnhancedQueueExecutor.java:1589)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+	at org.jboss.threads.JBossThread.run(JBossThread.java:501)
+</failure>
+  </testcase>
+  <system-out><![CDATA[2025-11-03 21:13:36,946 WARN  [io.qua.arc.dep.SplitPackageProcessor] (build-46) Detected a split package usage which is considered a bad practice and should be avoided. Following packages were detected in multiple archives: 
+- "io.apicurio.registry.client" found in [io.apicurio:apicurio-registry-java-sdk-common:3.1.1, io.apicurio:apicurio-registry-java-sdk:3.1.1, io.apicurio:apicurio-registry-v2-java-sdk:3.1.1]
+- "io.apicurio.registry.serde" found in [io.apicurio:apicurio-registry-serde-common:3.1.1, io.apicurio:apicurio-registry-serde-kafka-common:3.1.1]
+- "io.apicurio.registry.content.canon" found in [io.apicurio:apicurio-registry-schema-util-common:3.1.1, io.apicurio:apicurio-registry-schema-util-protobuf:3.1.1]
+- "io.apicurio.registry.serde.data" found in [io.apicurio:apicurio-registry-serde-common:3.1.1, io.apicurio:apicurio-registry-serde-kafka-common:3.1.1]
+- "io.apicurio.registry.content.refs" found in [io.apicurio:apicurio-registry-schema-util-common:3.1.1, io.apicurio:apicurio-registry-schema-util-protobuf:3.1.1]
+- "io.apicurio.registry.serde.protobuf.ref" found in [io.apicurio:apicurio-registry-protobuf-serde-kafka:3.1.1, io.apicurio:apicurio-registry-serde-common-protobuf:3.1.1]
+- "io.apicurio.registry.serde.config" found in [io.apicurio:apicurio-registry-serde-common:3.1.1, io.apicurio:apicurio-registry-serde-kafka-common:3.1.1]
+- "io.apicurio.registry.rules.validity" found in [io.apicurio:apicurio-registry-schema-util-common:3.1.1, io.apicurio:apicurio-registry-schema-util-protobuf:3.1.1]
+- "grpc.health.v1" found in [io.pipeline:grpc-stubs:1.0.0-SNAPSHOT, io.quarkus:quarkus-grpc-stubs:3.29.0]
+- "io.apicurio.registry.content" found in [io.apicurio:apicurio-registry-schema-util-common:3.1.1, io.apicurio:apicurio-registry-schema-util-protobuf:3.1.1]
+- "io.apicurio.registry.serde.protobuf" found in [io.apicurio:apicurio-registry-protobuf-serde-kafka:3.1.1, io.apicurio:apicurio-registry-serde-common-protobuf:3.1.1]
+- "io.apicurio.registry.content.dereference" found in [io.apicurio:apicurio-registry-schema-util-common:3.1.1, io.apicurio:apicurio-registry-schema-util-protobuf:3.1.1]
+- "io.apicurio.registry.rules.compatibility" found in [io.apicurio:apicurio-registry-schema-util-common:3.1.1, io.apicurio:apicurio-registry-schema-util-protobuf:3.1.1]
+2025-11-03 21:13:36,976 INFO  [org.tes.DockerClientFactory] (build-4) Testcontainers version: 1.21.3
+2025-11-03 21:13:37,152 INFO  [org.tes.doc.DockerClientProviderStrategy] (build-4) Found Docker environment with local Unix socket (unix:///var/run/docker.sock)
+2025-11-03 21:13:37,161 INFO  [org.tes.DockerClientFactory] (build-4) Docker host IP address is 172.17.0.1
+2025-11-03 21:13:37,169 INFO  [org.tes.DockerClientFactory] (build-4) Connected to docker: 
+  Server Version: 28.5.1
+  API Version: 1.51
+  Operating System: Ubuntu 24.04.3 LTS
+  Total Memory: 63901 MB
+2025-11-03 21:13:37,173 INFO  [org.tes.ima.PullPolicy] (build-4) Image pull policy will be performed by: DefaultPullPolicy()
+2025-11-03 21:13:37,174 INFO  [org.tes.uti.ImageNameSubstitutor] (build-4) Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+2025-11-03 21:13:37,176 INFO  [org.tes.DockerClientFactory] (build-4) Checking the system...
+2025-11-03 21:13:37,176 INFO  [org.tes.DockerClientFactory] (build-4) ✔︎ Docker server version should be at least 1.6.0
+2025-11-03 21:13:37,253 INFO  [tc.tes.12.0] (build-4) Creating container for image: testcontainers/ryuk:0.12.0
+2025-11-03 21:13:37,255 INFO  [org.tes.uti.RegistryAuthLocator] (build-4) Failure when attempting to lookup auth config. Please ignore if you don't have images in an authenticated registry. Details: (dockerImageName: testcontainers/ryuk:0.12.0, configFile: /root/.docker/config.json, configEnv: DOCKER_AUTH_CONFIG). Falling back to docker-java default behaviour. Exception message: Status 404: No config supplied. Checked in order: /root/.docker/config.json (file not found), DOCKER_AUTH_CONFIG (not set)
+2025-11-03 21:13:37,302 INFO  [io.qua.sma.dep.processor] (build-2) Generating Jackson serializer for type io.pipeline.repository.account.AccountEvent
+2025-11-03 21:13:37,379 WARN  [io.qua.arc.pro.BeanArchives] (build-34) Failed to index io.apicurio.common.apps.config.Info: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: TEST for JUnitQuarkusTest-no-profile (QuarkusTest)@6f099cef
+2025-11-03 21:13:37,379 INFO  [io.qua.arc.pro.IndexClassLookupUtils] (build-34) Class for name: io.apicurio.common.apps.config.Info was not found in Jandex index. Please ensure the class is part of the index.
+2025-11-03 21:13:37,488 INFO  [tc.tes.12.0] (build-4) Container testcontainers/ryuk:0.12.0 is starting: 47d24525e75f37b1486e01281c89e83b1c45471a8d3fcf8abb382bb509df1b5c
+2025-11-03 21:13:37,602 INFO  [tc.tes.12.0] (build-4) Container testcontainers/ryuk:0.12.0 started in PT0.348438016S
+2025-11-03 21:13:37,605 INFO  [io.qua.dev.dep.com.ComposeRunner] (build-4) Compose is running command: docker compose up -d
+2025-11-03 21:13:37,638 INFO  [io.qua.dev.dep.com.ComposeRunner] (process-error-consumer-1-"docker"-1150)  Network pipeline-test-services_pipeline-test-network  Creating
+2025-11-03 21:13:37,652 INFO  [io.qua.dev.dep.com.ComposeRunner] (process-error-consumer-1-"docker"-1150)  Network pipeline-test-services_pipeline-test-network  Created
+2025-11-03 21:13:37,652 INFO  [io.qua.dev.dep.com.ComposeRunner] (process-error-consumer-1-"docker"-1150)  Volume pipeline-test-services_mysql_test_data  Creating
+2025-11-03 21:13:37,653 INFO  [io.qua.dev.dep.com.ComposeRunner] (process-error-consumer-1-"docker"-1150)  Volume pipeline-test-services_mysql_test_data  Created
+2025-11-03 21:13:37,653 INFO  [io.qua.dev.dep.com.ComposeRunner] (process-error-consumer-1-"docker"-1150)  Volume pipeline-test-services_kafka_test_data  Creating
+2025-11-03 21:13:37,654 INFO  [io.qua.dev.dep.com.ComposeRunner] (process-error-consumer-1-"docker"-1150)  Volume pipeline-test-services_kafka_test_data  Created
+2025-11-03 21:13:37,654 INFO  [io.qua.dev.dep.com.ComposeRunner] (process-error-consumer-1-"docker"-1150)  Container pipeline-kafka-test  Creating
+2025-11-03 21:13:37,654 INFO  [io.qua.dev.dep.com.ComposeRunner] (process-error-consumer-1-"docker"-1150)  Container pipeline-mysql-test  Creating
+2025-11-03 21:13:37,667 INFO  [io.qua.dev.dep.com.ComposeRunner] (process-error-consumer-1-"docker"-1150)  Container pipeline-kafka-test  Created
+2025-11-03 21:13:37,667 INFO  [io.qua.dev.dep.com.ComposeRunner] (process-error-consumer-1-"docker"-1150)  Container pipeline-mysql-test  Created
+2025-11-03 21:13:37,667 INFO  [io.qua.dev.dep.com.ComposeRunner] (process-error-consumer-1-"docker"-1150)  Container pipeline-test-services-init-db-1  Creating
+2025-11-03 21:13:37,676 INFO  [io.qua.dev.dep.com.ComposeRunner] (process-error-consumer-1-"docker"-1150)  Container pipeline-test-services-init-db-1  Created
+2025-11-03 21:13:37,676 INFO  [io.qua.dev.dep.com.ComposeRunner] (process-error-consumer-1-"docker"-1150)  Container pipeline-apicurio-registry-test  Creating
+2025-11-03 21:13:37,683 INFO  [io.qua.dev.dep.com.ComposeRunner] (process-error-consumer-1-"docker"-1150)  Container pipeline-apicurio-registry-test  Created
+2025-11-03 21:13:37,684 INFO  [io.qua.dev.dep.com.ComposeRunner] (process-error-consumer-1-"docker"-1150)  Container pipeline-kafka-test  Starting
+2025-11-03 21:13:37,684 INFO  [io.qua.dev.dep.com.ComposeRunner] (process-error-consumer-1-"docker"-1150)  Container pipeline-mysql-test  Starting
+2025-11-03 21:13:37,773 INFO  [io.qua.dev.dep.com.ComposeRunner] (process-error-consumer-1-"docker"-1150)  Container pipeline-kafka-test  Started
+2025-11-03 21:13:37,784 INFO  [io.qua.dev.dep.com.ComposeRunner] (process-error-consumer-1-"docker"-1150)  Container pipeline-mysql-test  Started
+2025-11-03 21:13:37,785 INFO  [io.qua.dev.dep.com.ComposeRunner] (process-error-consumer-1-"docker"-1150)  Container pipeline-mysql-test  Waiting
+2025-11-03 21:13:43,286 INFO  [io.qua.dev.dep.com.ComposeRunner] (process-error-consumer-1-"docker"-1150)  Container pipeline-mysql-test  Healthy
+2025-11-03 21:13:43,286 INFO  [io.qua.dev.dep.com.ComposeRunner] (process-error-consumer-1-"docker"-1150)  Container pipeline-test-services-init-db-1  Starting
+2025-11-03 21:13:43,375 INFO  [io.qua.dev.dep.com.ComposeRunner] (process-error-consumer-1-"docker"-1150)  Container pipeline-test-services-init-db-1  Started
+2025-11-03 21:13:43,375 INFO  [io.qua.dev.dep.com.ComposeRunner] (process-error-consumer-1-"docker"-1150)  Container pipeline-test-services-init-db-1  Waiting
+2025-11-03 21:13:43,876 INFO  [io.qua.dev.dep.com.ComposeRunner] (process-error-consumer-1-"docker"-1150)  Container pipeline-test-services-init-db-1  Exited
+2025-11-03 21:13:43,877 INFO  [io.qua.dev.dep.com.ComposeRunner] (process-error-consumer-1-"docker"-1150)  Container pipeline-apicurio-registry-test  Starting
+2025-11-03 21:13:43,960 INFO  [io.qua.dev.dep.com.ComposeRunner] (process-error-consumer-1-"docker"-1150)  Container pipeline-apicurio-registry-test  Started
+2025-11-03 21:13:43,963 INFO  [io.qua.dev.dep.com.ComposeRunner] (build-4) Compose has finished running
+2025-11-03 21:13:43,967 WARN  [io.qua.dev.dep.com.ComposeDevServicesProcessor] (build-4) Could not start successfully Compose dev services for project pipeline-test-services, reason: Services named [init-db] do not exist, but wait conditions have been defined for them.
+2025-11-03 21:13:44,350 WARN  [io.qua.arc.dep.SplitPackageProcessor] (build-13) Detected a split package usage which is considered a bad practice and should be avoided. Following packages were detected in multiple archives: 
+- "io.apicurio.registry.client" found in [io.apicurio:apicurio-registry-java-sdk-common:3.1.1, io.apicurio:apicurio-registry-java-sdk:3.1.1, io.apicurio:apicurio-registry-v2-java-sdk:3.1.1]
+- "io.apicurio.registry.serde" found in [io.apicurio:apicurio-registry-serde-common:3.1.1, io.apicurio:apicurio-registry-serde-kafka-common:3.1.1]
+- "io.apicurio.registry.content.canon" found in [io.apicurio:apicurio-registry-schema-util-common:3.1.1, io.apicurio:apicurio-registry-schema-util-protobuf:3.1.1]
+- "io.apicurio.registry.serde.data" found in [io.apicurio:apicurio-registry-serde-common:3.1.1, io.apicurio:apicurio-registry-serde-kafka-common:3.1.1]
+- "io.apicurio.registry.content.refs" found in [io.apicurio:apicurio-registry-schema-util-common:3.1.1, io.apicurio:apicurio-registry-schema-util-protobuf:3.1.1]
+- "io.apicurio.registry.serde.protobuf.ref" found in [io.apicurio:apicurio-registry-protobuf-serde-kafka:3.1.1, io.apicurio:apicurio-registry-serde-common-protobuf:3.1.1]
+- "io.apicurio.registry.serde.config" found in [io.apicurio:apicurio-registry-serde-common:3.1.1, io.apicurio:apicurio-registry-serde-kafka-common:3.1.1]
+- "io.apicurio.registry.rules.validity" found in [io.apicurio:apicurio-registry-schema-util-common:3.1.1, io.apicurio:apicurio-registry-schema-util-protobuf:3.1.1]
+- "grpc.health.v1" found in [io.pipeline:grpc-stubs:1.0.0-SNAPSHOT, io.quarkus:quarkus-grpc-stubs:3.29.0]
+- "io.apicurio.registry.content" found in [io.apicurio:apicurio-registry-schema-util-common:3.1.1, io.apicurio:apicurio-registry-schema-util-protobuf:3.1.1]
+- "io.apicurio.registry.serde.protobuf" found in [io.apicurio:apicurio-registry-protobuf-serde-kafka:3.1.1, io.apicurio:apicurio-registry-serde-common-protobuf:3.1.1]
+- "io.apicurio.registry.content.dereference" found in [io.apicurio:apicurio-registry-schema-util-common:3.1.1, io.apicurio:apicurio-registry-schema-util-protobuf:3.1.1]
+- "io.apicurio.registry.rules.compatibility" found in [io.apicurio:apicurio-registry-schema-util-common:3.1.1, io.apicurio:apicurio-registry-schema-util-protobuf:3.1.1]
+2025-11-03 21:13:44,370 INFO  [io.qua.dev.dep.com.ComposeProject] (build-9) Waiting for service mysql-test to be ready
+2025-11-03 21:13:44,370 INFO  [io.qua.dev.dep.com.ComposeProject] (build-24) Waiting for service kafka-test to be ready
+2025-11-03 21:13:44,370 INFO  [io.qua.dev.dep.com.ComposeProject] (build-33) Waiting for service apicurio-registry-test to be ready
+2025-11-03 21:13:44,373 INFO  [io.qua.dev.dep.com.ComposeProject] (build-24) Service kafka-test is ready
+2025-11-03 21:13:44,373 INFO  [io.qua.dev.dep.com.ComposeProject] (build-9) Service mysql-test is ready
+2025-11-03 21:13:44,605 INFO  [io.qua.sma.dep.processor] (build-27) Generating Jackson serializer for type io.pipeline.repository.account.AccountEvent
+2025-11-03 21:13:44,647 WARN  [io.qua.arc.pro.BeanArchives] (build-18) Failed to index io.apicurio.common.apps.config.Info: Class does not exist in ClassLoader QuarkusClassLoader:Deployment Class Loader: TEST for JUnitQuarkusTest-no-profile (QuarkusTest)@50bf795f
+2025-11-03 21:13:49,055 INFO  [io.qua.dev.dep.com.ComposeProject] (build-33) Service apicurio-registry-test is ready
+2025-11-03 21:13:49,055 INFO  [io.qua.dev.dep.com.ComposeDevServicesProcessor] (build-26) Discovered existing Compose services for project pipeline-test-services
+]]></system-out>
+  <system-err><![CDATA[java.lang.RuntimeException: io.quarkus.builder.BuildException: Build failure: Build failed due to errors
+	[error]: Build step io.quarkus.devservices.deployment.compose.ComposeDevServicesProcessor#config threw an exception: java.lang.IllegalStateException: Services named [init-db] do not exist, but wait conditions have been defined for them.
+	at io.quarkus.devservices.deployment.compose.ComposeProject.discoverServiceInstances(ComposeProject.java:293)
+	at io.quarkus.devservices.deployment.compose.ComposeProject.start(ComposeProject.java:178)
+	at io.quarkus.devservices.deployment.compose.ComposeDevServicesProcessor.startCompose(ComposeDevServicesProcessor.java:262)
+	at io.quarkus.devservices.deployment.compose.ComposeDevServicesProcessor.config(ComposeDevServicesProcessor.java:122)
+	at java.base/java.lang.invoke.MethodHandle.invokeWithArguments(MethodHandle.java:733)
+	at io.quarkus.deployment.ExtensionLoader$3.execute(ExtensionLoader.java:872)
+	at io.quarkus.builder.BuildContext.run(BuildContext.java:255)
+	at org.jboss.threads.ContextHandler$1.runWith(ContextHandler.java:18)
+	at org.jboss.threads.EnhancedQueueExecutor$Task.doRunWith(EnhancedQueueExecutor.java:2651)
+	at org.jboss.threads.EnhancedQueueExecutor$Task.run(EnhancedQueueExecutor.java:2630)
+	at org.jboss.threads.EnhancedQueueExecutor.runThreadBody(EnhancedQueueExecutor.java:1622)
+	at org.jboss.threads.EnhancedQueueExecutor$ThreadBody.run(EnhancedQueueExecutor.java:1589)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+	at org.jboss.threads.JBossThread.run(JBossThread.java:501)
+
+	at io.quarkus.runner.bootstrap.AugmentActionImpl.runAugment(AugmentActionImpl.java:375)
+	at io.quarkus.runner.bootstrap.AugmentActionImpl.createInitialRuntimeApplication(AugmentActionImpl.java:292)
+	at io.quarkus.runner.bootstrap.AugmentActionImpl.createInitialRuntimeApplication(AugmentActionImpl.java:60)
+	at io.quarkus.test.junit.AppMakerHelper.getStartupAction(AppMakerHelper.java:253)
+	at io.quarkus.test.junit.classloading.FacadeClassLoader.getOrCreateRuntimeClassLoader(FacadeClassLoader.java:587)
+	at io.quarkus.test.junit.classloading.FacadeClassLoader.getQuarkusClassLoader(FacadeClassLoader.java:484)
+	at io.quarkus.test.junit.classloading.FacadeClassLoader.loadClass(FacadeClassLoader.java:366)
+	at java.base/java.lang.Class.forName0(Native Method)
+	at java.base/java.lang.Class.forName(Class.java:536)
+	at java.base/java.lang.Class.forName(Class.java:515)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor.loadClass(JUnitPlatformTestClassProcessor.java:184)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor.access$100(JUnitPlatformTestClassProcessor.java:62)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor$CollectAllTestClassesExecutor.execute(JUnitPlatformTestClassProcessor.java:120)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor$CollectAllTestClassesExecutor.execute(JUnitPlatformTestClassProcessor.java:110)
+	at org.gradle.api.internal.tasks.testing.junit.AbstractJUnitTestClassProcessor.processTestClass(AbstractJUnitTestClassProcessor.java:61)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:54)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.gradle.internal.dispatch.MethodInvocation.invokeOn(MethodInvocation.java:77)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:28)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:19)
+	at org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:33)
+	at org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:88)
+	at jdk.proxy1/jdk.proxy1.$Proxy4.processTestClass(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker$2.run(TestWorker.java:177)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.executeAndMaintainThreadName(TestWorker.java:126)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:103)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:63)
+	at org.gradle.process.internal.worker.child.ActionExecutionWorker.execute(ActionExecutionWorker.java:56)
+	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:122)
+	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:72)
+	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
+	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
+Caused by: io.quarkus.builder.BuildException: Build failure: Build failed due to errors
+	[error]: Build step io.quarkus.devservices.deployment.compose.ComposeDevServicesProcessor#config threw an exception: java.lang.IllegalStateException: Services named [init-db] do not exist, but wait conditions have been defined for them.
+	at io.quarkus.devservices.deployment.compose.ComposeProject.discoverServiceInstances(ComposeProject.java:293)
+	at io.quarkus.devservices.deployment.compose.ComposeProject.start(ComposeProject.java:178)
+	at io.quarkus.devservices.deployment.compose.ComposeDevServicesProcessor.startCompose(ComposeDevServicesProcessor.java:262)
+	at io.quarkus.devservices.deployment.compose.ComposeDevServicesProcessor.config(ComposeDevServicesProcessor.java:122)
+	at java.base/java.lang.invoke.MethodHandle.invokeWithArguments(MethodHandle.java:733)
+	at io.quarkus.deployment.ExtensionLoader$3.execute(ExtensionLoader.java:872)
+	at io.quarkus.builder.BuildContext.run(BuildContext.java:255)
+	at org.jboss.threads.ContextHandler$1.runWith(ContextHandler.java:18)
+	at org.jboss.threads.EnhancedQueueExecutor$Task.doRunWith(EnhancedQueueExecutor.java:2651)
+	at org.jboss.threads.EnhancedQueueExecutor$Task.run(EnhancedQueueExecutor.java:2630)
+	at org.jboss.threads.EnhancedQueueExecutor.runThreadBody(EnhancedQueueExecutor.java:1622)
+	at org.jboss.threads.EnhancedQueueExecutor$ThreadBody.run(EnhancedQueueExecutor.java:1589)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+	at org.jboss.threads.JBossThread.run(JBossThread.java:501)
+
+	at io.quarkus.builder.Execution.run(Execution.java:139)
+	at io.quarkus.builder.BuildExecutionBuilder.execute(BuildExecutionBuilder.java:78)
+	at io.quarkus.deployment.QuarkusAugmentor.run(QuarkusAugmentor.java:160)
+	at io.quarkus.runner.bootstrap.AugmentActionImpl.runAugment(AugmentActionImpl.java:371)
+	... 32 more
+Caused by: java.lang.IllegalStateException: Services named [init-db] do not exist, but wait conditions have been defined for them.
+	at io.quarkus.devservices.deployment.compose.ComposeProject.discoverServiceInstances(ComposeProject.java:293)
+	at io.quarkus.devservices.deployment.compose.ComposeProject.start(ComposeProject.java:178)
+	at io.quarkus.devservices.deployment.compose.ComposeDevServicesProcessor.startCompose(ComposeDevServicesProcessor.java:262)
+	at io.quarkus.devservices.deployment.compose.ComposeDevServicesProcessor.config(ComposeDevServicesProcessor.java:122)
+	at java.base/java.lang.invoke.MethodHandle.invokeWithArguments(MethodHandle.java:733)
+	at io.quarkus.deployment.ExtensionLoader$3.execute(ExtensionLoader.java:872)
+	at io.quarkus.builder.BuildContext.run(BuildContext.java:255)
+	at org.jboss.threads.ContextHandler$1.runWith(ContextHandler.java:18)
+	at org.jboss.threads.EnhancedQueueExecutor$Task.doRunWith(EnhancedQueueExecutor.java:2651)
+	at org.jboss.threads.EnhancedQueueExecutor$Task.run(EnhancedQueueExecutor.java:2630)
+	at org.jboss.threads.EnhancedQueueExecutor.runThreadBody(EnhancedQueueExecutor.java:1622)
+	at org.jboss.threads.EnhancedQueueExecutor$ThreadBody.run(EnhancedQueueExecutor.java:1589)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+	at org.jboss.threads.JBossThread.run(JBossThread.java:501)
+java.lang.RuntimeException: io.quarkus.builder.BuildException: Build failure: Build failed due to errors
+	[error]: Build step io.quarkus.devservices.deployment.compose.ComposeDevServicesProcessor#config threw an exception: java.lang.IllegalStateException: Services named [init-db] do not exist, but wait conditions have been defined for them.
+	at io.quarkus.devservices.deployment.compose.ComposeProject.discoverServiceInstances(ComposeProject.java:293)
+	at io.quarkus.devservices.deployment.compose.ComposeProject.start(ComposeProject.java:178)
+	at io.quarkus.devservices.deployment.compose.ComposeDevServicesProcessor.startCompose(ComposeDevServicesProcessor.java:262)
+	at io.quarkus.devservices.deployment.compose.ComposeDevServicesProcessor.config(ComposeDevServicesProcessor.java:122)
+	at java.base/java.lang.invoke.MethodHandle.invokeWithArguments(MethodHandle.java:733)
+	at io.quarkus.deployment.ExtensionLoader$3.execute(ExtensionLoader.java:872)
+	at io.quarkus.builder.BuildContext.run(BuildContext.java:255)
+	at org.jboss.threads.ContextHandler$1.runWith(ContextHandler.java:18)
+	at org.jboss.threads.EnhancedQueueExecutor$Task.doRunWith(EnhancedQueueExecutor.java:2651)
+	at org.jboss.threads.EnhancedQueueExecutor$Task.run(EnhancedQueueExecutor.java:2630)
+	at org.jboss.threads.EnhancedQueueExecutor.runThreadBody(EnhancedQueueExecutor.java:1622)
+	at org.jboss.threads.EnhancedQueueExecutor$ThreadBody.run(EnhancedQueueExecutor.java:1589)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+	at org.jboss.threads.JBossThread.run(JBossThread.java:501)
+
+	at io.quarkus.runner.bootstrap.AugmentActionImpl.runAugment(AugmentActionImpl.java:375)
+	at io.quarkus.runner.bootstrap.AugmentActionImpl.createInitialRuntimeApplication(AugmentActionImpl.java:292)
+	at io.quarkus.runner.bootstrap.AugmentActionImpl.createInitialRuntimeApplication(AugmentActionImpl.java:60)
+	at io.quarkus.test.junit.AppMakerHelper.getStartupAction(AppMakerHelper.java:253)
+	at io.quarkus.test.junit.classloading.FacadeClassLoader.getOrCreateRuntimeClassLoader(FacadeClassLoader.java:587)
+	at io.quarkus.test.junit.classloading.FacadeClassLoader.getQuarkusClassLoader(FacadeClassLoader.java:484)
+	at io.quarkus.test.junit.classloading.FacadeClassLoader.loadClass(FacadeClassLoader.java:366)
+	at java.base/java.lang.Class.forName0(Native Method)
+	at java.base/java.lang.Class.forName(Class.java:536)
+	at java.base/java.lang.Class.forName(Class.java:515)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor.loadClass(JUnitPlatformTestClassProcessor.java:184)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor.access$100(JUnitPlatformTestClassProcessor.java:62)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor$CollectAllTestClassesExecutor.execute(JUnitPlatformTestClassProcessor.java:120)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor$CollectAllTestClassesExecutor.execute(JUnitPlatformTestClassProcessor.java:110)
+	at org.gradle.api.internal.tasks.testing.junit.AbstractJUnitTestClassProcessor.processTestClass(AbstractJUnitTestClassProcessor.java:61)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:54)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.gradle.internal.dispatch.MethodInvocation.invokeOn(MethodInvocation.java:77)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:28)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:19)
+	at org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:33)
+	at org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:88)
+	at jdk.proxy1/jdk.proxy1.$Proxy4.processTestClass(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker$2.run(TestWorker.java:177)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.executeAndMaintainThreadName(TestWorker.java:126)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:103)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:63)
+	at org.gradle.process.internal.worker.child.ActionExecutionWorker.execute(ActionExecutionWorker.java:56)
+	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:122)
+	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:72)
+	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
+	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
+Caused by: io.quarkus.builder.BuildException: Build failure: Build failed due to errors
+	[error]: Build step io.quarkus.devservices.deployment.compose.ComposeDevServicesProcessor#config threw an exception: java.lang.IllegalStateException: Services named [init-db] do not exist, but wait conditions have been defined for them.
+	at io.quarkus.devservices.deployment.compose.ComposeProject.discoverServiceInstances(ComposeProject.java:293)
+	at io.quarkus.devservices.deployment.compose.ComposeProject.start(ComposeProject.java:178)
+	at io.quarkus.devservices.deployment.compose.ComposeDevServicesProcessor.startCompose(ComposeDevServicesProcessor.java:262)
+	at io.quarkus.devservices.deployment.compose.ComposeDevServicesProcessor.config(ComposeDevServicesProcessor.java:122)
+	at java.base/java.lang.invoke.MethodHandle.invokeWithArguments(MethodHandle.java:733)
+	at io.quarkus.deployment.ExtensionLoader$3.execute(ExtensionLoader.java:872)
+	at io.quarkus.builder.BuildContext.run(BuildContext.java:255)
+	at org.jboss.threads.ContextHandler$1.runWith(ContextHandler.java:18)
+	at org.jboss.threads.EnhancedQueueExecutor$Task.doRunWith(EnhancedQueueExecutor.java:2651)
+	at org.jboss.threads.EnhancedQueueExecutor$Task.run(EnhancedQueueExecutor.java:2630)
+	at org.jboss.threads.EnhancedQueueExecutor.runThreadBody(EnhancedQueueExecutor.java:1622)
+	at org.jboss.threads.EnhancedQueueExecutor$ThreadBody.run(EnhancedQueueExecutor.java:1589)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+	at org.jboss.threads.JBossThread.run(JBossThread.java:501)
+
+	at io.quarkus.builder.Execution.run(Execution.java:139)
+	at io.quarkus.builder.BuildExecutionBuilder.execute(BuildExecutionBuilder.java:78)
+	at io.quarkus.deployment.QuarkusAugmentor.run(QuarkusAugmentor.java:160)
+	at io.quarkus.runner.bootstrap.AugmentActionImpl.runAugment(AugmentActionImpl.java:371)
+	... 32 more
+Caused by: java.lang.IllegalStateException: Services named [init-db] do not exist, but wait conditions have been defined for them.
+	at io.quarkus.devservices.deployment.compose.ComposeProject.discoverServiceInstances(ComposeProject.java:293)
+	at io.quarkus.devservices.deployment.compose.ComposeProject.start(ComposeProject.java:178)
+	at io.quarkus.devservices.deployment.compose.ComposeDevServicesProcessor.startCompose(ComposeDevServicesProcessor.java:262)
+	at io.quarkus.devservices.deployment.compose.ComposeDevServicesProcessor.config(ComposeDevServicesProcessor.java:122)
+	at java.base/java.lang.invoke.MethodHandle.invokeWithArguments(MethodHandle.java:733)
+	at io.quarkus.deployment.ExtensionLoader$3.execute(ExtensionLoader.java:872)
+	at io.quarkus.builder.BuildContext.run(BuildContext.java:255)
+	at org.jboss.threads.ContextHandler$1.runWith(ContextHandler.java:18)
+	at org.jboss.threads.EnhancedQueueExecutor$Task.doRunWith(EnhancedQueueExecutor.java:2651)
+	at org.jboss.threads.EnhancedQueueExecutor$Task.run(EnhancedQueueExecutor.java:2630)
+	at org.jboss.threads.EnhancedQueueExecutor.runThreadBody(EnhancedQueueExecutor.java:1622)
+	at org.jboss.threads.EnhancedQueueExecutor$ThreadBody.run(EnhancedQueueExecutor.java:1589)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+	at org.jboss.threads.JBossThread.run(JBossThread.java:501)
+]]></system-err>
+</testsuite>

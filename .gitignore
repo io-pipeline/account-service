@@ -52,3 +52,6 @@ quarkus.log
 .env
 .env.local
 .env.*.local
+
+# Artifactory compose (contains secrets)
+dev-assets/docker/gitea-runner/artifactory-compose.yml

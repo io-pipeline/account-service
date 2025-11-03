@@ -10,6 +10,8 @@ networks:
 volumes:
   mysql_test_data:
     driver: local
+  kafka_test_data:
+    driver: local
 
 services:
   # MySQL instance for tests (optimized for speed)
@@ -39,8 +41,6 @@ services:
       quarkus-dev-service-mysql: test
       # Wait for MySQL to be ready before considering service started
       io.quarkus.devservices.compose.wait_for.logs: ".*ready for connections.*"
-      # Map MySQL JDBC URL to datasource property
-      io.quarkus.devservices.compose.config_map.jdbc_url: quarkus.datasource.jdbc.url
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 3s
@@ -74,7 +74,7 @@ services:
       # Mark as Quarkus devservice so it's recognized by compose devservices
       quarkus-dev-service-init-db: test
 
-  # Redpanda for Kafka-compatible messaging (test instance)
+  # Redpanda for Kafka-compatible messaging (test instance - faster than Kafka!)
   kafka-test:
     container_name: pipeline-kafka-test
     image: redpandadata/redpanda:latest
@@ -88,9 +88,20 @@ services:
       - --kafka-addr internal://0.0.0.0:9092,external://0.0.0.0:9094
       - --advertise-kafka-addr internal://kafka-test:9092,external://localhost:9095
     ports:
+      - "9093:9092"     # Internal port
       - "9095:9094"     # External port for localhost access
+      - "9644:9644"     # Admin API
+    volumes:
+      - kafka_test_data:/var/lib/redpanda/data
     labels:
+      # Quarkus devservices label to prevent automatic Kafka devservice creation
       quarkus-dev-service-kafka: test
+      # Wait for Redpanda to be ready (~1 second startup!)
+      io.quarkus.devservices.compose.wait_for.logs: ".*Successfully started Redpanda!.*"
+      # Map the exposed port to kafka.bootstrap.servers property
+      # Note: This sets kafka.bootstrap.servers to just the port number (9095)
+      # For CI/DinD, we override with full 172.17.0.1:9095 address via environment variables
+      io.quarkus.devservices.compose.config_map.port.9094: kafka.bootstrap.servers
     healthcheck:
       test: ["CMD-SHELL", "rpk cluster health | grep -q 'Healthy:.*true'"]
       interval: 3s

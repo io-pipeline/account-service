@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="io.pipeline.account.AccountServiceGrpcTest" tests="6" skipped="6" failures="0" errors="0" timestamp="2025-11-03T21:13:50.143Z" hostname="f597339b4b79" time="0.001">
+  <properties/>
+  <testcase name="testActiveFieldConsistency()" classname="io.pipeline.account.AccountServiceGrpcTest" time="0.0">
+    <skipped message="Boot failed" type="org.opentest4j.TestAbortedException">org.opentest4j.TestAbortedException: Boot failed
+	at io.quarkus.test.junit.QuarkusTestExtension.throwBootFailureException(QuarkusTestExtension.java:668)
+	at io.quarkus.test.junit.QuarkusTestExtension.interceptTestClassConstructor(QuarkusTestExtension.java:761)
+	at java.base/java.util.Optional.orElseGet(Optional.java:364)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+</skipped>
+  </testcase>
+  <testcase name="testListAccountsSupportsIncludeInactiveAndQuery()" classname="io.pipeline.account.AccountServiceGrpcTest" time="0.0">
+    <skipped message="Boot failed" type="org.opentest4j.TestAbortedException">org.opentest4j.TestAbortedException: Boot failed
+	at io.quarkus.test.junit.QuarkusTestExtension.throwBootFailureException(QuarkusTestExtension.java:668)
+	at io.quarkus.test.junit.QuarkusTestExtension.interceptTestClassConstructor(QuarkusTestExtension.java:761)
+	at java.base/java.util.Optional.orElseGet(Optional.java:364)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+</skipped>
+  </testcase>
+  <testcase name="testActiveAccountHasActiveField()" classname="io.pipeline.account.AccountServiceGrpcTest" time="0.0">
+    <skipped message="Boot failed" type="org.opentest4j.TestAbortedException">org.opentest4j.TestAbortedException: Boot failed
+	at io.quarkus.test.junit.QuarkusTestExtension.throwBootFailureException(QuarkusTestExtension.java:668)
+	at io.quarkus.test.junit.QuarkusTestExtension.interceptTestClassConstructor(QuarkusTestExtension.java:761)
+	at java.base/java.util.Optional.orElseGet(Optional.java:364)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+</skipped>
+  </testcase>
+  <testcase name="testUpdateAccount()" classname="io.pipeline.account.AccountServiceGrpcTest" time="0.0">
+    <skipped message="Boot failed" type="org.opentest4j.TestAbortedException">org.opentest4j.TestAbortedException: Boot failed
+	at io.quarkus.test.junit.QuarkusTestExtension.throwBootFailureException(QuarkusTestExtension.java:668)
+	at io.quarkus.test.junit.QuarkusTestExtension.interceptTestClassConstructor(QuarkusTestExtension.java:761)
+	at java.base/java.util.Optional.orElseGet(Optional.java:364)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+</skipped>
+  </testcase>
+  <testcase name="testInactiveAccountHasActiveField()" classname="io.pipeline.account.AccountServiceGrpcTest" time="0.0">
+    <skipped message="Boot failed" type="org.opentest4j.TestAbortedException">org.opentest4j.TestAbortedException: Boot failed
+	at io.quarkus.test.junit.QuarkusTestExtension.throwBootFailureException(QuarkusTestExtension.java:668)
+	at io.quarkus.test.junit.QuarkusTestExtension.interceptTestClassConstructor(QuarkusTestExtension.java:761)
+	at java.base/java.util.Optional.orElseGet(Optional.java:364)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+</skipped>
+  </testcase>
+  <testcase name="testListAccountsReturnsActiveByDefault()" classname="io.pipeline.account.AccountServiceGrpcTest" time="0.0">
+    <skipped message="Boot failed" type="org.opentest4j.TestAbortedException">org.opentest4j.TestAbortedException: Boot failed
+	at io.quarkus.test.junit.QuarkusTestExtension.throwBootFailureException(QuarkusTestExtension.java:668)
+	at io.quarkus.test.junit.QuarkusTestExtension.interceptTestClassConstructor(QuarkusTestExtension.java:761)
+	at java.base/java.util.Optional.orElseGet(Optional.java:364)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+</skipped>
+  </testcase>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
