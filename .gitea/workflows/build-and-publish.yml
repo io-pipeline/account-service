@@ -90,21 +90,9 @@ jobs:
         env:
           GITEA_USER: ${{ secrets.GIT_USER }}
           GITEA_TOKEN: ${{ secrets.GIT_TOKEN }}
-          # Use test-ci profile for DinD environment
-          QUARKUS_PROFILE: test-ci
-          # Override MySQL connection for DinD environment
-          QUARKUS_DATASOURCE_JDBC_URL: jdbc:mysql://172.17.0.1:3307/pipeline_account_test
-          # Override Kafka connection for DinD environment
-          KAFKA_BOOTSTRAP_SERVERS_TEST: kafka-test:9092
-          MP_MESSAGING_CONNECTOR_SMALLRYE_KAFKA_BOOTSTRAP_SERVERS: 172.17.0.1:9095
-          MP_MESSAGING_OUTGOING_ACCOUNT_EVENTS_BOOTSTRAP_SERVERS: 172.17.0.1:9095
           # Override Apicurio Registry URL for DinD environment
-          APICURIO_REGISTRY_URL: http://172.17.0.1:8082/apis/registry/v3
           APICURIO_REGISTRY_URL_TEST: http://172.17.0.1:8082/apis/registry/v3
-          MP_MESSAGING_CONNECTOR_SMALLRYE_KAFKA_APICURIO_REGISTRY_URL: http://172.17.0.1:8082/apis/registry/v3
-          MP_MESSAGING_OUTGOING_ACCOUNT_EVENTS_APICURIO_REGISTRY_URL: http://172.17.0.1:8082/apis/registry/v3
-
-        run: ./gradlew clean build --no-daemon --warn --configuration-cache -Dkafka.bootstrap.servers=172.17.0.1:9095 -Dmp.messaging.connector.smallrye-kafka.bootstrap.servers=172.17.0.1:9095 -Dmp.messaging.outgoing.account-events.bootstrap.servers=172.17.0.1:9095
+        run: ./gradlew clean build --no-daemon --warn --configuration-cache -Dquarkus.profile=test-ci
 
       - name: Stop test services
         if: always()
