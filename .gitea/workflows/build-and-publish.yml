@@ -57,10 +57,10 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Run tests with Gradle
+      - name: Build and test with Gradle
         env:
           REPOS_PAT: ${{ secrets.REPOS_PAT }}
-        run: ./gradlew clean test --no-daemon --warn
+        run: ./gradlew clean build test --no-daemon
 
       - name: Upload test results
         if: always()
