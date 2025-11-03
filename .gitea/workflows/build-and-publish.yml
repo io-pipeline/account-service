@@ -92,7 +92,10 @@ jobs:
           GITEA_TOKEN: ${{ secrets.GIT_TOKEN }}
           # Override Apicurio Registry URL for DinD environment
           APICURIO_REGISTRY_URL_TEST: http://172.17.0.1:8082/apis/registry/v3
-        run: ./gradlew clean build --no-daemon --warn --configuration-cache -Dquarkus.profile=test-ci
+        run: |
+          apt-get update && apt-get install -y mysql-client
+          mysql -h 172.17.0.1 -P 3307 -u pipeline -ppassword -e "SHOW DATABASES;"
+          ./gradlew clean build --no-daemon --warn --configuration-cache -Dquarkus.profile=test-ci
 
       - name: Stop test services
         if: always()
