@@ -94,9 +94,10 @@ jobs:
           # Override Kafka connection for DinD environment
           KAFKA_BOOTSTRAP_SERVERS: 172.17.0.1:9095
           # Override Apicurio Registry URL for DinD environment
+          APICURIO_REGISTRY_URL: http://172.17.0.1:8082/apis/registry/v3
           APICURIO_REGISTRY_URL_TEST: http://172.17.0.1:8082/apis/registry/v3
-          # Override Apicurio connection for DinD environment
-          QUARKUS_APICURIO_REGISTRY_URL: http://172.17.0.1:8082/apis/registry/v2
+          MP_MESSAGING_CONNECTOR_SMALLRYE_KAFKA_APICURIO_REGISTRY_URL: http://172.17.0.1:8082/apis/registry/v3
+          MP_MESSAGING_OUTGOING_ACCOUNT_EVENTS_APICURIO_REGISTRY_URL: http://172.17.0.1:8082/apis/registry/v3
 
         run: ./gradlew clean build --no-daemon --warn --configuration-cache
 
