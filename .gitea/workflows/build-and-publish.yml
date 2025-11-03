@@ -30,33 +30,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Test Docker access
-        run: |
-          docker --version
-          docker info || echo "Docker info failed"
-          docker ps || echo "Docker ps failed"
-
-      - name: Clean up any existing test containers
-        run: |
-          docker compose -f src/test/resources/compose-test-services-ci.yml down -v 2>/dev/null || true
-          docker ps -a
-
-      - name: Start test services
-        env:
-          MYSQL_ROOT_PASSWORD: rootpassword
-          APICURIO_PASSWORD: apicuriopass
-        run: |
-          cd src/test/resources
-          docker compose -f compose-test-services-ci.yml up -d || (echo "Failed to start services, showing logs:" && docker compose -f compose-test-services-ci.yml logs && exit 1)
-          echo "Containers started, checking status:"
-          docker compose -f compose-test-services-ci.yml ps
-
-      - name: Wait for test services
-        run: |
-          echo "Waiting for MySQL to be ready..."
-          timeout 120 bash -c 'until (echo > /dev/tcp/localhost/3307) 2>/dev/null; do echo "Waiting..."; sleep 5; done'
-          echo "MySQL port is open"
-
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
@@ -88,12 +61,6 @@ jobs:
           GIT_USER: ${{ secrets.GIT_USER }}
           GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
         run: ./gradlew publish --no-daemon
-
-      - name: Stop test services
-        if: always()
-        run: |
-          cd src/test/resources
-          docker compose -f compose-test-services-ci.yml down -v || true
 
   docker:
     runs-on: ubuntu-latest
