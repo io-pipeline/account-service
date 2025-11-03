@@ -17,6 +17,12 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - name: Wait for test services
+        run: |
+          echo "Waiting for MySQL to be ready..."
+          timeout 120 bash -c 'until mysqladmin ping -h localhost -P 3307 -u pipeline -ppassword --silent; do echo "Waiting..."; sleep 5; done'
+          echo "MySQL is ready"
+
       - name: Run tests with Gradle
         env:
           GITEA_USER: ${{ secrets.GIT_USER }}
