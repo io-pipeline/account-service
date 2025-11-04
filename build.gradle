@@ -83,8 +83,9 @@ publishing {
         maven(MavenPublication) { publication ->
             from components.java
             //noinspection GroovyAssignabilityCheck
-            artifact(tasks.named('quarkusBuild')) { artifact ->
+            artifact(file("${buildDir}/quarkus-app/quarkus-run.jar")) { artifact ->
                 artifact.classifier = 'runner'
+                artifact.builtBy tasks.named('quarkusBuild')
             }
             pom { pom ->
                 pom.name = 'Account Service'
