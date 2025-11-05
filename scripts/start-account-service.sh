@@ -59,5 +59,5 @@ print_status "info" "DevServices will automatically start: MySQL, Kafka, Consul,
 print_status "info" "Press Ctrl+C to stop"
 echo
 
-# Start using the app's own gradlew
-./gradlew quarkusDev
+# Start using the app's own gradlew with the detected registration host
+./gradlew quarkusDev -Dservice.registration.host=$PLATFORM_REGISTRATION_HOST
