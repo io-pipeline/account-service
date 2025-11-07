@@ -4,6 +4,27 @@ plugins {
     alias(libs.plugins.maven.publish)
 }
 
+repositories {
+    mavenLocal()
+    maven {
+        name = "Reposilite"
+        url = uri("https://maven.rokkon.com/snapshots")
+        credentials {
+            username = project.findProperty("reposilite.user") ?: System.getenv("REPOS_USER") ?: "admin"
+            password = project.findProperty("reposilite.token") ?: System.getenv("REPOS_PAT")
+        }
+    }
+    maven {
+        name = "Gitea"
+        url = uri("https://git.rokkon.com/api/packages/io-pipeline/maven")
+        credentials {
+            username = project.findProperty("gitea.user") ?: System.getenv("GIT_USER") ?: "krickert"
+            password = project.findProperty("gitea.token") ?: System.getenv("GIT_PAT")
+        }
+    }
+    mavenCentral()
+}
+
 dependencies {
     implementation 'io.quarkus:quarkus-container-image-docker'
 
@@ -138,6 +159,18 @@ publishing {
             credentials {
                 username = project.findProperty("gitea.user") ?: System.getenv("GIT_USER") ?: "krickert"
                 password = project.findProperty("gitea.token") ?: System.getenv("GIT_PAT")
+            }
+        }
+
+        // Publish to GitHub Packages (only if credentials available)
+        if (project.hasProperty("gpr.user") || System.getenv("GITHUB_ACTOR") != null) {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/io-pipeline/account-service")
+                credentials {
+                    username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
+                    password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+                }
             }
         }
     }
