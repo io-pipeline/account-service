@@ -37,43 +37,6 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Create init script to override repositories
-        run: |
-          mkdir -p ~/.gradle/init.d
-          cat > ~/.gradle/init.d/repositories.gradle <<'EOF'
-          allprojects {
-              buildscript {
-                  repositories {
-                      gradlePluginPortal()
-                      mavenCentral()
-                  }
-              }
-          }
-          settingsEvaluated { settings ->
-              settings.pluginManagement {
-                  repositories {
-                      gradlePluginPortal()
-                      mavenCentral()
-                  }
-              }
-              settings.dependencyResolutionManagement {
-                  repositories {
-                      maven {
-                          url = uri('https://maven.pkg.github.com/io-pipeline/bom')
-                          credentials {
-                              username = System.getenv("GITHUB_ACTOR")
-                              password = System.getenv("GITHUB_TOKEN")
-                          }
-                          content {
-                              includeGroupByRegex "io\\.pipeline(\\..*)?"
-                          }
-                      }
-                      mavenCentral()
-                  }
-              }
-          }
-          EOF
-
       - name: Build and test with Gradle
         env:
           GITHUB_ACTOR: ${{ github.actor }}
@@ -125,43 +88,6 @@ jobs:
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-
-      - name: Create init script to override repositories
-        run: |
-          mkdir -p ~/.gradle/init.d
-          cat > ~/.gradle/init.d/repositories.gradle <<'EOF'
-          allprojects {
-              buildscript {
-                  repositories {
-                      gradlePluginPortal()
-                      mavenCentral()
-                  }
-              }
-          }
-          settingsEvaluated { settings ->
-              settings.pluginManagement {
-                  repositories {
-                      gradlePluginPortal()
-                      mavenCentral()
-                  }
-              }
-              settings.dependencyResolutionManagement {
-                  repositories {
-                      maven {
-                          url = uri('https://maven.pkg.github.com/io-pipeline/bom')
-                          credentials {
-                              username = System.getenv("GITHUB_ACTOR")
-                              password = System.getenv("GITHUB_TOKEN")
-                          }
-                          content {
-                              includeGroupByRegex "io\\.pipeline(\\..*)?"
-                          }
-                      }
-                      mavenCentral()
-                  }
-              }
-          }
-          EOF
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
