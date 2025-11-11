@@ -1,10 +1,10 @@
-package io.pipeline.account;
+package ai.pipestream.account;
 
-import io.pipeline.grpc.wiremock.MockServiceTestResource;
-import io.pipeline.repository.account.AccountServiceGrpc;
-import io.pipeline.repository.account.CreateAccountRequest;
-import io.pipeline.repository.account.GetAccountRequest;
-import io.pipeline.repository.account.InactivateAccountRequest;
+import ai.pipestream.grpc.wiremock.MockServiceTestResource;
+import ai.pipestream.repository.account.AccountServiceGrpc;
+import ai.pipestream.repository.account.CreateAccountRequest;
+import ai.pipestream.repository.account.GetAccountRequest;
+import ai.pipestream.repository.account.InactivateAccountRequest;
 import io.quarkus.grpc.GrpcClient;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;

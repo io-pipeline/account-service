@@ -1,6 +1,6 @@
-package io.pipeline.account.services;
+package ai.pipestream.account.services;
 
-import io.pipeline.repository.account.AccountEvent;
+import ai.pipestream.repository.account.AccountEvent;
 import io.smallrye.reactive.messaging.kafka.api.OutgoingKafkaRecordMetadata;
 import io.smallrye.reactive.messaging.MutinyEmitter;
 import io.smallrye.mutiny.subscription.Cancellable;
@@ -11,7 +11,6 @@ import org.eclipse.microprofile.reactive.messaging.Message;
 import org.jboss.logging.Logger;
 
 import java.time.Instant;
-import java.util.UUID;
 
 /**
  * Publisher for account lifecycle events to Kafka.

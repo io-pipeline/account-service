@@ -1,13 +1,13 @@
-package io.pipeline.account;
+package ai.pipestream.account;
 
 import io.grpc.ManagedChannel;
-import io.pipeline.grpc.wiremock.WireMockGrpcTestResource;
-import io.pipeline.grpc.wiremock.AccountManagerMock;
-import io.pipeline.grpc.wiremock.InjectWireMock;
-import io.pipeline.repository.account.AccountServiceGrpc;
-import io.pipeline.repository.account.CreateAccountRequest;
-import io.pipeline.repository.account.GetAccountRequest;
-import io.pipeline.repository.account.InactivateAccountRequest;
+import ai.pipestream.grpc.wiremock.WireMockGrpcTestResource;
+import ai.pipestream.grpc.wiremock.AccountManagerMock;
+import ai.pipestream.grpc.wiremock.InjectWireMock;
+import ai.pipestream.repository.account.AccountServiceGrpc;
+import ai.pipestream.repository.account.CreateAccountRequest;
+import ai.pipestream.repository.account.GetAccountRequest;
+import ai.pipestream.repository.account.InactivateAccountRequest;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import com.github.tomakehurst.wiremock.WireMockServer;

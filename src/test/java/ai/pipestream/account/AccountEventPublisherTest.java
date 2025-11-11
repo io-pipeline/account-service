@@ -1,9 +1,9 @@
-package io.pipeline.account;
+package ai.pipestream.account;
 
-import io.pipeline.grpc.wiremock.MockServiceTestResource;
-import io.pipeline.repository.account.AccountEvent;
-import io.pipeline.repository.account.AccountServiceGrpc;
-import io.pipeline.repository.account.CreateAccountRequest;
+import ai.pipestream.grpc.wiremock.MockServiceTestResource;
+import ai.pipestream.repository.account.AccountEvent;
+import ai.pipestream.repository.account.AccountServiceGrpc;
+import ai.pipestream.repository.account.CreateAccountRequest;
 
 // Standard Kafka and Apicurio classes
 import org.apache.kafka.clients.consumer.ConsumerConfig;

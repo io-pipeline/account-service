@@ -1,19 +1,21 @@
-package io.pipeline.account;
+package ai.pipestream.account;
 
-import io.pipeline.grpc.wiremock.MockServiceTestResource;
-import io.pipeline.repository.account.AccountServiceGrpc;
-import io.pipeline.repository.account.CreateAccountRequest;
-import io.pipeline.repository.account.GetAccountRequest;
-import io.pipeline.repository.account.InactivateAccountRequest;
-import io.pipeline.repository.account.ListAccountsRequest;
-import io.pipeline.repository.account.UpdateAccountRequest;
+import ai.pipestream.grpc.wiremock.MockServiceTestResource;
+import ai.pipestream.repository.account.AccountServiceGrpc;
+import ai.pipestream.repository.account.CreateAccountRequest;
+import ai.pipestream.repository.account.GetAccountRequest;
+import ai.pipestream.repository.account.InactivateAccountRequest;
+import ai.pipestream.repository.account.ListAccountsRequest;
+import ai.pipestream.repository.account.UpdateAccountRequest;
 import io.quarkus.grpc.GrpcClient;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
 
 /**
  * gRPC integration tests to verify that the active field is properly
@@ -45,8 +47,9 @@ public class AccountServiceGrpcTest {
                 .build();
 
         var createResponse = accountService.createAccount(createRequest);
-        assertTrue(createResponse.getCreated());
-        assertTrue(createResponse.getAccount().getActive(), "Created account should be active");
+        assertThat("Account creation should succeed", createResponse.getCreated(), is(true));
+        assertThat("Newly created account should have active=true in response",
+                createResponse.getAccount().getActive(), is(true));
 
         // Get the account and verify active field is present
         var getRequest = GetAccountRequest.newBuilder()
@@ -54,11 +57,14 @@ public class AccountServiceGrpcTest {
                 .build();
 
         var account = accountService.getAccount(getRequest);
-        
+
         // This is the critical test - the active field should be true
-        assertTrue(account.getActive(), "Active field should be true for active account");
-        assertEquals(testAccountId, account.getAccountId());
-        assertEquals("Active Test Account", account.getName());
+        assertThat("Retrieved active account should have active=true field",
+                account.getActive(), is(true));
+        assertThat("Account ID should match the created account",
+                account.getAccountId(), equalTo(testAccountId));
+        assertThat("Account name should match the created account",
+                account.getName(), equalTo("Active Test Account"));
     }
 
     @Test
@@ -73,8 +79,9 @@ public class AccountServiceGrpcTest {
                 .build();
 
         var createResponse = accountService.createAccount(createRequest);
-        assertTrue(createResponse.getCreated());
-        assertTrue(createResponse.getAccount().getActive(), "Created account should be active");
+        assertThat("Account creation should succeed", createResponse.getCreated(), is(true));
+        assertThat("Newly created account should have active=true in response",
+                createResponse.getAccount().getActive(), is(true));
 
         // Inactivate the account
         var inactivateRequest = InactivateAccountRequest.newBuilder()
@@ -83,7 +90,8 @@ public class AccountServiceGrpcTest {
                 .build();
 
         var inactivateResponse = accountService.inactivateAccount(inactivateRequest);
-        assertTrue(inactivateResponse.getSuccess(), "Inactivation should succeed");
+        assertThat("Account inactivation should succeed",
+                inactivateResponse.getSuccess(), is(true));
 
         // Get the inactive account and verify active field is present and false
         var getRequest = GetAccountRequest.newBuilder()
@@ -91,11 +99,14 @@ public class AccountServiceGrpcTest {
                 .build();
 
         var account = accountService.getAccount(getRequest);
-        
+
         // This is the critical test - the active field should be false
-        assertFalse(account.getActive(), "Active field should be false for inactive account");
-        assertEquals(testAccountId, account.getAccountId());
-        assertEquals("Inactive Test Account", account.getName());
+        assertThat("Retrieved inactive account should have active=false field",
+                account.getActive(), is(false));
+        assertThat("Account ID should match the inactivated account",
+                account.getAccountId(), equalTo(testAccountId));
+        assertThat("Account name should match the inactivated account",
+                account.getName(), equalTo("Inactive Test Account"));
     }
 
     @Test
@@ -114,15 +125,19 @@ public class AccountServiceGrpcTest {
             .setDescription("Updated description")
             .build());
 
-        assertEquals("Updated Name", updateResponse.getAccount().getName());
-        assertEquals("Updated description", updateResponse.getAccount().getDescription());
+        assertThat("Update response should contain updated name",
+                updateResponse.getAccount().getName(), equalTo("Updated Name"));
+        assertThat("Update response should contain updated description",
+                updateResponse.getAccount().getDescription(), equalTo("Updated description"));
 
         var fetched = accountService.getAccount(GetAccountRequest.newBuilder()
             .setAccountId(testAccountId)
             .build());
 
-        assertEquals("Updated Name", fetched.getName());
-        assertEquals("Updated description", fetched.getDescription());
+        assertThat("Fetched account should have updated name persisted",
+                fetched.getName(), equalTo("Updated Name"));
+        assertThat("Fetched account should have updated description persisted",
+                fetched.getDescription(), equalTo("Updated description"));
     }
 
     @Test
@@ -144,7 +159,8 @@ public class AccountServiceGrpcTest {
                 .build();
 
         var activeAccount = accountService.getAccount(getRequest);
-        assertTrue(activeAccount.getActive());
+        assertThat("Initially retrieved account should be active",
+                activeAccount.getActive(), is(true));
 
         // Inactivate account
         var inactivateRequest = InactivateAccountRequest.newBuilder()
@@ -156,11 +172,14 @@ public class AccountServiceGrpcTest {
 
         // Verify inactive account
         var inactiveAccount = accountService.getAccount(getRequest);
-        assertFalse(inactiveAccount.getActive(), "Active field should be false for inactive accounts");
-        
+        assertThat("After inactivation, account active field should be false",
+                inactiveAccount.getActive(), is(false));
+
         // Verify other fields are still present
-        assertEquals(testAccountId, inactiveAccount.getAccountId());
-        assertEquals("Consistency Test Account", inactiveAccount.getName());
+        assertThat("Account ID should remain consistent after inactivation",
+                inactiveAccount.getAccountId(), equalTo(testAccountId));
+        assertThat("Account name should remain consistent after inactivation",
+                inactiveAccount.getName(), equalTo("Consistency Test Account"));
     }
 
     @Test
@@ -184,8 +203,12 @@ public class AccountServiceGrpcTest {
 
         var response = accountService.listAccounts(ListAccountsRequest.newBuilder().build());
 
-        assertTrue(response.getAccountsList().stream().anyMatch(a -> a.getAccountId().equals(idPrefix + "-active")));
-        assertFalse(response.getAccountsList().stream().anyMatch(a -> a.getAccountId().equals(idPrefix + "-inactive")));
+        assertThat("listAccounts() should return the active account by default",
+                response.getAccountsList().stream().anyMatch(a -> a.getAccountId().equals(idPrefix + "-active")),
+                is(true));
+        assertThat("listAccounts() should NOT return inactive accounts by default",
+                response.getAccountsList().stream().anyMatch(a -> a.getAccountId().equals(idPrefix + "-inactive")),
+                is(false));
     }
 
     @Test
@@ -212,8 +235,13 @@ public class AccountServiceGrpcTest {
             .setIncludeInactive(true)
             .build());
 
-        assertEquals(2, response.getAccountsCount());
-        assertTrue(response.getAccountsList().stream().anyMatch(a -> a.getAccountId().equals(idPrefix + "-one")));
-        assertTrue(response.getAccountsList().stream().anyMatch(a -> a.getAccountId().equals(idPrefix + "-two")));
+        assertThat("Query 'mar' with includeInactive=true should return 2 accounts",
+                response.getAccountsCount(), is(2));
+        assertThat("Results should include the active account matching 'mar'",
+                response.getAccountsList().stream().anyMatch(a -> a.getAccountId().equals(idPrefix + "-one")),
+                is(true));
+        assertThat("Results should include the inactive account matching 'mar' when includeInactive=true",
+                response.getAccountsList().stream().anyMatch(a -> a.getAccountId().equals(idPrefix + "-two")),
+                is(true));
     }
 }

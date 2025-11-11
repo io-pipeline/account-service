@@ -1,6 +1,6 @@
-package io.pipeline.account.repository;
+package ai.pipestream.account.repository;
 
-import io.pipeline.account.entity.Account;
+import ai.pipestream.account.entity.Account;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;

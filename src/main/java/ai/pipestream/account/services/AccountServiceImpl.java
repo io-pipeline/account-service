@@ -1,26 +1,25 @@
-package io.pipeline.account.services;
+package ai.pipestream.account.services;
 
 import com.google.protobuf.Timestamp;
 import io.grpc.Status;
-import io.pipeline.repository.account.CreateAccountRequest;
-import io.pipeline.repository.account.CreateAccountResponse;
-import io.pipeline.repository.account.GetAccountRequest;
-import io.pipeline.repository.account.InactivateAccountRequest;
-import io.pipeline.repository.account.InactivateAccountResponse;
-import io.pipeline.repository.account.ListAccountsRequest;
-import io.pipeline.repository.account.ListAccountsResponse;
-import io.pipeline.repository.account.MutinyAccountServiceGrpc;
-import io.pipeline.repository.account.ReactivateAccountRequest;
-import io.pipeline.repository.account.ReactivateAccountResponse;
-import io.pipeline.repository.account.UpdateAccountRequest;
-import io.pipeline.repository.account.UpdateAccountResponse;
-import io.pipeline.account.entity.Account;
-import io.pipeline.account.repository.AccountRepository;
+import ai.pipestream.repository.account.CreateAccountRequest;
+import ai.pipestream.repository.account.CreateAccountResponse;
+import ai.pipestream.repository.account.GetAccountRequest;
+import ai.pipestream.repository.account.InactivateAccountRequest;
+import ai.pipestream.repository.account.InactivateAccountResponse;
+import ai.pipestream.repository.account.ListAccountsRequest;
+import ai.pipestream.repository.account.ListAccountsResponse;
+import ai.pipestream.repository.account.MutinyAccountServiceGrpc;
+import ai.pipestream.repository.account.ReactivateAccountRequest;
+import ai.pipestream.repository.account.ReactivateAccountResponse;
+import ai.pipestream.repository.account.UpdateAccountRequest;
+import ai.pipestream.repository.account.UpdateAccountResponse;
+import ai.pipestream.account.entity.Account;
+import ai.pipestream.account.repository.AccountRepository;
 import io.quarkus.grpc.GrpcService;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.infrastructure.Infrastructure;
 import jakarta.inject.Inject;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 // S3 feature temporarily disabled
 // import software.amazon.awssdk.services.s3.S3Client;
@@ -139,7 +138,7 @@ public class AccountServiceImpl extends MutinyAccountServiceGrpc.AccountServiceI
      * @throws io.grpc.StatusRuntimeException with NOT_FOUND if account doesn't exist
      */
     @Override
-    public Uni<io.pipeline.repository.account.Account> getAccount(GetAccountRequest request) {
+    public Uni<ai.pipestream.repository.account.Account> getAccount(GetAccountRequest request) {
         return Uni.createFrom().item(() -> {
             LOG.infof("Getting account: accountId=%s", request.getAccountId());
 
@@ -354,11 +353,11 @@ public class AccountServiceImpl extends MutinyAccountServiceGrpc.AccountServiceI
     }
     */
 
-    private io.pipeline.repository.account.Account toProtoAccount(Account account) {
+    private ai.pipestream.repository.account.Account toProtoAccount(Account account) {
         boolean isActive = account.active != null ? account.active : false;
         String description = account.description != null ? account.description : "";
 
-        return io.pipeline.repository.account.Account.newBuilder()
+        return ai.pipestream.repository.account.Account.newBuilder()
             .setAccountId(account.accountId)
             .setName(account.name)
             .setDescription(description)

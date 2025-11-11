@@ -1,4 +1,4 @@
-package io.pipeline.account;
+package ai.pipestream.account;
 
 import io.quarkus.test.common.DevServicesContext;
 import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;

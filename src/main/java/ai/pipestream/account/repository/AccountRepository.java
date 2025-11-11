@@ -1,6 +1,6 @@
-package io.pipeline.account.repository;
+package ai.pipestream.account.repository;
 
-import io.pipeline.account.entity.Account;
+import ai.pipestream.account.entity.Account;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;

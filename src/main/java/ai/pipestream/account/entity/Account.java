@@ -1,4 +1,4 @@
-package io.pipeline.account.entity;
+package ai.pipestream.account.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;

@@ -1,7 +1,7 @@
-package io.pipeline.account;
+package ai.pipestream.account;
 
-import io.pipeline.grpc.wiremock.MockServiceTestResource;
-import io.pipeline.repository.account.*;
+import ai.pipestream.grpc.wiremock.MockServiceTestResource;
+import ai.pipestream.repository.account.*;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.grpc.GrpcClient;
