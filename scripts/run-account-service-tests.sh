@@ -61,6 +61,16 @@ echo "Running Tests"
 echo "========================================="
 echo ""
 
+# Ensure modern Docker API version is advertised to Testcontainers/docker-java
+export DOCKER_API_VERSION="${DOCKER_API_VERSION:-1.44}"
+# Prefer Unix socket strategy on Linux
+export TESTCONTAINERS_DOCKER_CLIENT_STRATEGY="org.testcontainers.dockerclient.UnixSocketClientProviderStrategy"
+
+echo "Environment overrides for Docker/Testcontainers:"
+echo "  DOCKER_API_VERSION=${DOCKER_API_VERSION}"
+echo "  TESTCONTAINERS_DOCKER_CLIENT_STRATEGY=${TESTCONTAINERS_DOCKER_CLIENT_STRATEGY}"
+echo ""
+
 # Run tests with full output
 ./gradlew clean test --no-daemon
 
