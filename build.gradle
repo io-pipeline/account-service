@@ -1,12 +1,27 @@
+import org.gradle.plugins.signing.Sign
+
 plugins {
     alias(libs.plugins.java)
     alias(libs.plugins.quarkus)
     alias(libs.plugins.maven.publish)
     id 'signing'
-    id 'com.gradleup.nmcp' version '1.2.0'
+    id 'com.gradleup.nmcp' version '1.2.1'
+    id 'pl.allegro.tech.build.axion-release' version '1.21.0'
 }
 
-def pipelineBomVersion = findProperty('pipelineBomVersion') ?: '0.1.2-SNAPSHOT'
+// Semantic versioning with axion-release
+scmVersion {
+    tag {
+        prefix = 'v'
+    }
+    checks {
+        uncommittedChanges = false
+        aheadOfRemote = false
+        snapshotDependencies = false
+    }
+}
+
+def pipelineBomVersion = findProperty('pipelineBomVersion') ?: '0.2.2'
 
 dependencies {
     implementation 'io.quarkus:quarkus-container-image-docker'
@@ -46,12 +61,10 @@ dependencies {
     testImplementation libs.awaitility
     testImplementation platform('org.testcontainers:testcontainers-bom:2.0.1')
     testImplementation 'org.testcontainers:testcontainers'
-
-
 }
 
 group = 'ai.pipestream'
-version = pipelineBomVersion
+version = "${scmVersion.version}"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
@@ -81,7 +94,7 @@ publishing {
             from components.java
             pom {
                 name.set('Account Service')
-                description.set('User account management and authentication service for the Pipestream platform')
+                description.set('Account management service for multi-tenant support in the Pipeline platform')
                 url.set('https://github.com/ai-pipestream/account-service')
 
                 licenses {
@@ -94,7 +107,7 @@ publishing {
                 developers {
                     developer {
                         id.set('krickert')
-                        name.set('Pipestream Platform Team')
+                        name.set('Pipestream Engine Team')
                     }
                 }
 
@@ -107,28 +120,29 @@ publishing {
         }
     }
     repositories {
-        // Publish to Maven Local for development
         mavenLocal()
-        def githubToken = providers.environmentVariable("GITHUB_TOKEN")
-        if (githubToken.isPresent()) {
+
+        // GitHub Packages
+        def ghRepo = System.getenv('GITHUB_REPOSITORY') ?: 'ai-pipestream/account-service'
+        def ghActor = System.getenv('GITHUB_ACTOR') ?: (project.findProperty('gpr.user') ?: System.getenv('GPR_USER'))
+        def ghToken = System.getenv('GITHUB_TOKEN') ?: (project.findProperty('gpr.key') ?: System.getenv('GPR_TOKEN'))
+        if (ghActor && ghToken) {
             maven {
-                name = "GitHubPackages"
-                url = uri("https://maven.pkg.github.com/ai-pipestream/account-service")
+                name = 'GitHubPackages'
+                url = uri("https://maven.pkg.github.com/${ghRepo}")
                 credentials {
-                    username = providers.environmentVariable("GITHUB_ACTOR").getOrElse("github-actions")
-                    password = githubToken.get()
-                }
-                mavenContent {
-                    releasesOnly()
+                    username = ghActor
+                    password = ghToken
                 }
             }
         }
     }
 }
 
+// GPG Signing (uses org-level secrets)
 signing {
-    def signingKey = System.getenv("GPG_SIGNING_KEY")
-    def signingPassword = System.getenv("GPG_SIGNING_PASSPHRASE")
+    def signingKey = System.getenv("GPG_PRIVATE_KEY")
+    def signingPassword = System.getenv("GPG_PASSPHRASE")
 
     if (signingKey && signingPassword) {
         useInMemoryPgpKeys(signingKey, signingPassword)
@@ -136,6 +150,15 @@ signing {
     }
 }
 
+// Ensure signing tasks run before NMCP publication
+afterEvaluate {
+    tasks.matching { it.name.startsWith("nmcpZipAllPublications") || it.name.startsWith("nmcpPublishAllPublicationsToCentralPortal") }
+        .configureEach { nmcpTask ->
+            nmcpTask.dependsOn(tasks.withType(Sign))
+        }
+}
+
+// Maven Central publishing via NMCP
 nmcp {
     publishAllPublicationsToCentralPortal {
         username = providers.environmentVariable("MAVEN_CENTRAL_USERNAME")
