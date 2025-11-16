@@ -20,13 +20,25 @@ import java.time.Instant;
 public class AccountEventPublisher {
 
     private static final Logger LOG = Logger.getLogger(AccountEventPublisher.class);
-    
+
+    /**
+     * Default constructor required for CDI.
+     */
+    public AccountEventPublisher() {
+        // Default constructor for framework usage
+    }
+
     @Inject
     @Channel("account-events")
     MutinyEmitter<AccountEvent> accountEventEmitter;
     
     /**
      * Publish account created event.
+     *
+     * @param accountId unique identifier for the account
+     * @param name display name of the account
+     * @param description optional account description (may be {@code null})
+     * @return a {@link Cancellable} handle for the send operation
      */
     public Cancellable publishAccountCreated(String accountId, String name, String description) {
         try {
@@ -61,6 +73,11 @@ public class AccountEventPublisher {
     
     /**
      * Publish account updated event.
+     *
+     * @param accountId unique identifier for the account
+     * @param name updated display name of the account
+     * @param description updated account description (may be {@code null})
+     * @return a {@link Cancellable} handle for the send operation
      */
     public Cancellable publishAccountUpdated(String accountId, String name, String description) {
         try {
@@ -95,6 +112,10 @@ public class AccountEventPublisher {
     
     /**
      * Publish account inactivated event.
+     *
+     * @param accountId unique identifier for the account
+     * @param reason reason for inactivation (may be {@code null})
+     * @return a {@link Cancellable} handle for the send operation
      */
     public Cancellable publishAccountInactivated(String accountId, String reason) {
         try {
@@ -128,6 +149,10 @@ public class AccountEventPublisher {
     
     /**
      * Publish account reactivated event.
+     *
+     * @param accountId unique identifier for the account
+     * @param reason reason for reactivation (may be {@code null})
+     * @return a {@link Cancellable} handle for the send operation
      */
     public Cancellable publishAccountReactivated(String accountId, String reason) {
         try {

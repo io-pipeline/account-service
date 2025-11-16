@@ -53,6 +53,13 @@ public class AccountServiceImpl extends MutinyAccountServiceGrpc.AccountServiceI
     @Inject
     AccountEventPublisher eventPublisher;
 
+    /**
+     * Default constructor required for gRPC/CDI.
+     */
+    public AccountServiceImpl() {
+        // Default constructor for framework usage
+    }
+
     // S3 feature temporarily disabled
     // @ConfigProperty(name = "account.dev.s3-bucket-creation", defaultValue = "false")
     // boolean devS3BucketCreation;

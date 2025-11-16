@@ -31,6 +31,13 @@ public class AccountRepository {
 
     private static final Logger LOG = Logger.getLogger(AccountRepository.class);
 
+    /**
+     * Default constructor required for CDI.
+     */
+    public AccountRepository() {
+        // Default constructor for framework usage
+    }
+
     @Inject
     EntityManager entityManager;
 
@@ -230,6 +237,10 @@ public class AccountRepository {
 
     /**
      * Count accounts for pagination metadata.
+     *
+     * @param query optional partial search against accountId and name
+     * @param includeInactive whether to include inactive accounts in the count
+     * @return total number of matching accounts
      */
     @Transactional
     public long countAccounts(String query, boolean includeInactive) {
