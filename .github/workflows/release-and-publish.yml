@@ -167,7 +167,7 @@ jobs:
           ./gradlew clean build -x test --no-daemon
           mkdir -p release-assets
           cp build/libs/*.jar release-assets/
-          cp DOCKER.md release-assets/
+          cp DOCKER.md release-assets/ 2>/dev/null || true
           cp README.md release-assets/
           cd release-assets && zip -r ../account-service-${{ steps.get_version.outputs.version }}.zip . && cd ..
 
