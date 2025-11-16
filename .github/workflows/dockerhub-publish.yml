@@ -5,12 +5,20 @@ on:
     types: [dockerhub-publish]
 
 jobs:
-  publish:
+  push-to-dockerhub:
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: read
     steps:
+      - name: Validate payload
+        run: |
+          echo "Payload: ${{ toJson(github.event.client_payload) }}"
+          if [ -z "${{ github.event.client_payload.base_image }}" ] || [ -z "${{ github.event.client_payload.dockerhub_repo }}" ] || [ -z "${{ github.event.client_payload.tags }}" ]; then
+            echo "Missing required client_payload fields: base_image, dockerhub_repo, tags" >&2
+            exit 1
+          fi
+
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
@@ -24,17 +32,19 @@ jobs:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
-      - name: Pull, tag, and push to Docker Hub
+      - name: Pull from GHCR, retag, and push to Docker Hub
+        env:
+          BASE_IMAGE: ${{ github.event.client_payload.base_image }}
+          DOCKERHUB_REPO: ${{ github.event.client_payload.dockerhub_repo }}
+          TAGS: ${{ github.event.client_payload.tags }}
         run: |
           set -euo pipefail
-
-          BASE_IMAGE="${{ github.event.client_payload.base_image }}"
-          DOCKERHUB_REPO="${{ github.event.client_payload.dockerhub_repo }}"
-          TAGS="${{ github.event.client_payload.tags }}"
-
+          echo "Processing tags: $TAGS"
           for TAG in $TAGS; do
-            echo "Processing tag: $TAG"
-            docker pull "${BASE_IMAGE}:${TAG}"
-            docker tag "${BASE_IMAGE}:${TAG}" "${DOCKERHUB_REPO}:${TAG}"
-            docker push "${DOCKERHUB_REPO}:${TAG}"
+            echo "Pulling $BASE_IMAGE:$TAG"
+            docker pull "$BASE_IMAGE:$TAG"
+            echo "Tagging to $DOCKERHUB_REPO:$TAG"
+            docker tag "$BASE_IMAGE:$TAG" "$DOCKERHUB_REPO:$TAG"
+            echo "Pushing $DOCKERHUB_REPO:$TAG"
+            docker push "$DOCKERHUB_REPO:$TAG"
           done
