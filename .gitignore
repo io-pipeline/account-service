@@ -57,3 +57,4 @@ quarkus.log
 dev-assets/docker/gitea-runner/artifactory-compose.yml
 .claude
 CLAUDE.md
+.dev-helpers
