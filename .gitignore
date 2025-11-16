@@ -55,6 +55,10 @@ quarkus.log
 
 # Artifactory compose (contains secrets)
 dev-assets/docker/gitea-runner/artifactory-compose.yml
+
+# Claude Code
 .claude
 CLAUDE.md
-.dev-helpers
+
+# Auto-downloaded dev helpers
+.dev-helpers/
