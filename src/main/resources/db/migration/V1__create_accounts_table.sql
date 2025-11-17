@@ -1,5 +1,5 @@
 -- Create accounts table for multi-tenant support
-CREATE TABLE IF NOT EXISTS accounts (
+CREATE TABLE accounts (
     account_id VARCHAR(255) PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description TEXT,
