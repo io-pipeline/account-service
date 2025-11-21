@@ -9,6 +9,8 @@ import jakarta.inject.Inject;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.jboss.logging.Logger;
 
+import ai.pipestream.grpc.util.KafkaProtobufKeys;
+
 import java.time.Instant;
 import java.util.UUID;
 
@@ -44,16 +46,14 @@ public class AccountEventPublisher {
      */
     public Cancellable publishAccountCreated(String accountId, String name, String description) {
         try {
-            UUID key = getUuidFromId(accountId);
-
-            AccountEvent.Created created = AccountEvent.Created.newBuilder()
-                    .setName(name)
-                    .setDescription(description != null ? description : "")
-                    .build();
-
             AccountEvent event = buildBaseEvent(accountId, "created")
-                    .setCreated(created)
+                    .setCreated(AccountEvent.Created.newBuilder()
+                            .setName(name)
+                            .setDescription(description != null ? description : "")
+                            .build())
                     .build();
+
+            UUID key = KafkaProtobufKeys.uuid(event);
 
             LOG.infof("Publishing account created event: accountId=%s (UUID: %s)", accountId, key);
             return accountEventEmitter.sendAndForget(Record.of(key, event));
@@ -73,16 +73,14 @@ public class AccountEventPublisher {
      */
     public Cancellable publishAccountUpdated(String accountId, String name, String description) {
         try {
-            UUID key = getUuidFromId(accountId);
-
-            AccountEvent.Updated updated = AccountEvent.Updated.newBuilder()
-                    .setName(name)
-                    .setDescription(description != null ? description : "")
-                    .build();
-
             AccountEvent event = buildBaseEvent(accountId, "updated")
-                    .setUpdated(updated)
+                    .setUpdated(AccountEvent.Updated.newBuilder()
+                            .setName(name)
+                            .setDescription(description != null ? description : "")
+                            .build())
                     .build();
+            
+            UUID key = KafkaProtobufKeys.uuid(event);
 
             LOG.infof("Publishing account updated event: accountId=%s", accountId);
             return accountEventEmitter.sendAndForget(Record.of(key, event));
@@ -101,15 +99,13 @@ public class AccountEventPublisher {
      */
     public Cancellable publishAccountInactivated(String accountId, String reason) {
         try {
-            UUID key = getUuidFromId(accountId);
-
-            AccountEvent.Inactivated inactivated = AccountEvent.Inactivated.newBuilder()
-                    .setReason(reason != null ? reason : "")
-                    .build();
-
             AccountEvent event = buildBaseEvent(accountId, "inactivated")
-                    .setInactivated(inactivated)
+                    .setInactivated(AccountEvent.Inactivated.newBuilder()
+                            .setReason(reason != null ? reason : "")
+                            .build())
                     .build();
+            
+            UUID key = KafkaProtobufKeys.uuid(event);
 
             LOG.infof("Publishing account inactivated event: accountId=%s, reason=%s", accountId, reason);
             return accountEventEmitter.sendAndForget(Record.of(key, event));
@@ -128,37 +124,19 @@ public class AccountEventPublisher {
      */
     public Cancellable publishAccountReactivated(String accountId, String reason) {
         try {
-            UUID key = getUuidFromId(accountId);
-
-            AccountEvent.Reactivated reactivated = AccountEvent.Reactivated.newBuilder()
-                    .setReason(reason != null ? reason : "")
-                    .build();
-
             AccountEvent event = buildBaseEvent(accountId, "reactivated")
-                    .setReactivated(reactivated)
+                    .setReactivated(AccountEvent.Reactivated.newBuilder()
+                            .setReason(reason != null ? reason : "")
+                            .build())
                     .build();
+            
+            UUID key = KafkaProtobufKeys.uuid(event);
 
             LOG.infof("Publishing account reactivated event: accountId=%s, reason=%s", accountId, reason);
             return accountEventEmitter.sendAndForget(Record.of(key, event));
         } catch (Exception e) {
             LOG.errorf(e, "Error publishing account reactivated event: accountId=%s", accountId);
             throw new RuntimeException("Failed to publish account reactivated event", e);
-        }
-    }
-
-    /**
-     * Helper to safely convert string IDs to UUIDs.
-     * Strategies:
-     * 1. Parse as standard UUID.
-     * 2. Fallback: Generate Type 3 UUID (Name-based) from bytes.
-     * This ensures "test" always maps to the same UUID, preserving compaction.
-     */
-    private UUID getUuidFromId(String id) {
-        try {
-            return UUID.fromString(id);
-        } catch (IllegalArgumentException e) {
-            // Fallback for non-standard IDs (e.g. "test", "acme-corp")
-            return UUID.nameUUIDFromBytes(id.getBytes());
         }
     }
 
