@@ -9,20 +9,13 @@ rootProject.name = 'account-service'
 dependencyResolutionManagement {
     versionCatalogs {
         libs {
-            from("ai.pipestream:pipeline-bom-catalog:0.2.6")
+            from("ai.pipestream:pipeline-bom-catalog:0.2.8-SNAPSHOT")
         }
     }
 
     repositories {
         // Prefer Maven Central but allow locally published releases for development
-        mavenLocal {
-            mavenContent {
-                releasesOnly()
-            }
-            content {
-                includeGroupByRegex "ai\\.pipestream(\\..*)?"
-            }
-        }
+        mavenLocal()
 
         mavenCentral()
 

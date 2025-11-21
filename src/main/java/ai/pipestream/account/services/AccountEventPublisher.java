@@ -1,20 +1,22 @@
 package ai.pipestream.account.services;
 
 import ai.pipestream.repository.account.AccountEvent;
-import io.smallrye.reactive.messaging.kafka.api.OutgoingKafkaRecordMetadata;
-import io.smallrye.reactive.messaging.MutinyEmitter;
 import io.smallrye.mutiny.subscription.Cancellable;
+import io.smallrye.reactive.messaging.MutinyEmitter;
+import io.smallrye.reactive.messaging.kafka.Record;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.reactive.messaging.Channel;
-import org.eclipse.microprofile.reactive.messaging.Message;
 import org.jboss.logging.Logger;
 
 import java.time.Instant;
+import java.util.UUID;
 
 /**
  * Publisher for account lifecycle events to Kafka.
  * Events are published in protobuf format with Apicurio schema validation.
+ * <p>
+ * STRICT TYPING: Keys are strictly enforced as UUIDs via Record&lt;UUID, Value&gt;.
  */
 @ApplicationScoped
 public class AccountEventPublisher {
@@ -30,8 +32,8 @@ public class AccountEventPublisher {
 
     @Inject
     @Channel("account-events")
-    MutinyEmitter<AccountEvent> accountEventEmitter;
-    
+    MutinyEmitter<Record<UUID, AccountEvent>> accountEventEmitter;
+
     /**
      * Publish account created event.
      *
@@ -42,35 +44,25 @@ public class AccountEventPublisher {
      */
     public Cancellable publishAccountCreated(String accountId, String name, String description) {
         try {
+            UUID key = getUuidFromId(accountId);
+
             AccountEvent.Created created = AccountEvent.Created.newBuilder()
-                .setName(name)
-                .setDescription(description != null ? description : "")
-                .build();
-            
-            AccountEvent event = AccountEvent.newBuilder()
-                .setEventId(generateEventId(accountId, "created"))
-                .setTimestamp(com.google.protobuf.Timestamp.newBuilder()
-                    .setSeconds(Instant.now().getEpochSecond())
-                    .setNanos(Instant.now().getNano())
-                    .build())
-                .setAccountId(accountId)
-                .setCreated(created)
-                .build();
-            
-            Message<AccountEvent> message = Message.of(event)
-                .addMetadata(OutgoingKafkaRecordMetadata.<String>builder()
-                    .withKey(accountId)
-                    .withTopic("account-events")
-                    .build());
-            
-            LOG.infof("Publishing account created event: accountId=%s", accountId);
-            return accountEventEmitter.sendMessageAndForget(message);
+                    .setName(name)
+                    .setDescription(description != null ? description : "")
+                    .build();
+
+            AccountEvent event = buildBaseEvent(accountId, "created")
+                    .setCreated(created)
+                    .build();
+
+            LOG.infof("Publishing account created event: accountId=%s (UUID: %s)", accountId, key);
+            return accountEventEmitter.sendAndForget(Record.of(key, event));
         } catch (Exception e) {
             LOG.errorf(e, "Error publishing account created event: accountId=%s", accountId);
             throw new RuntimeException("Failed to publish account created event", e);
         }
     }
-    
+
     /**
      * Publish account updated event.
      *
@@ -81,35 +73,25 @@ public class AccountEventPublisher {
      */
     public Cancellable publishAccountUpdated(String accountId, String name, String description) {
         try {
+            UUID key = getUuidFromId(accountId);
+
             AccountEvent.Updated updated = AccountEvent.Updated.newBuilder()
-                .setName(name)
-                .setDescription(description != null ? description : "")
-                .build();
-            
-            AccountEvent event = AccountEvent.newBuilder()
-                .setEventId(generateEventId(accountId, "updated"))
-                .setTimestamp(com.google.protobuf.Timestamp.newBuilder()
-                    .setSeconds(Instant.now().getEpochSecond())
-                    .setNanos(Instant.now().getNano())
-                    .build())
-                .setAccountId(accountId)
-                .setUpdated(updated)
-                .build();
-            
-            Message<AccountEvent> message = Message.of(event)
-                .addMetadata(OutgoingKafkaRecordMetadata.<String>builder()
-                    .withKey(accountId)
-                    .withTopic("account-events")
-                    .build());
-            
+                    .setName(name)
+                    .setDescription(description != null ? description : "")
+                    .build();
+
+            AccountEvent event = buildBaseEvent(accountId, "updated")
+                    .setUpdated(updated)
+                    .build();
+
             LOG.infof("Publishing account updated event: accountId=%s", accountId);
-            return accountEventEmitter.sendMessageAndForget(message);
+            return accountEventEmitter.sendAndForget(Record.of(key, event));
         } catch (Exception e) {
             LOG.errorf(e, "Error publishing account updated event: accountId=%s", accountId);
             throw new RuntimeException("Failed to publish account updated event", e);
         }
     }
-    
+
     /**
      * Publish account inactivated event.
      *
@@ -119,34 +101,24 @@ public class AccountEventPublisher {
      */
     public Cancellable publishAccountInactivated(String accountId, String reason) {
         try {
+            UUID key = getUuidFromId(accountId);
+
             AccountEvent.Inactivated inactivated = AccountEvent.Inactivated.newBuilder()
-                .setReason(reason != null ? reason : "")
-                .build();
-            
-            AccountEvent event = AccountEvent.newBuilder()
-                .setEventId(generateEventId(accountId, "inactivated"))
-                .setTimestamp(com.google.protobuf.Timestamp.newBuilder()
-                    .setSeconds(Instant.now().getEpochSecond())
-                    .setNanos(Instant.now().getNano())
-                    .build())
-                .setAccountId(accountId)
-                .setInactivated(inactivated)
-                .build();
-            
-            Message<AccountEvent> message = Message.of(event)
-                .addMetadata(OutgoingKafkaRecordMetadata.<String>builder()
-                    .withKey(accountId)
-                    .withTopic("account-events")
-                    .build());
-            
+                    .setReason(reason != null ? reason : "")
+                    .build();
+
+            AccountEvent event = buildBaseEvent(accountId, "inactivated")
+                    .setInactivated(inactivated)
+                    .build();
+
             LOG.infof("Publishing account inactivated event: accountId=%s, reason=%s", accountId, reason);
-            return accountEventEmitter.sendMessageAndForget(message);
+            return accountEventEmitter.sendAndForget(Record.of(key, event));
         } catch (Exception e) {
             LOG.errorf(e, "Error publishing account inactivated event: accountId=%s", accountId);
             throw new RuntimeException("Failed to publish account inactivated event", e);
         }
     }
-    
+
     /**
      * Publish account reactivated event.
      *
@@ -156,34 +128,53 @@ public class AccountEventPublisher {
      */
     public Cancellable publishAccountReactivated(String accountId, String reason) {
         try {
+            UUID key = getUuidFromId(accountId);
+
             AccountEvent.Reactivated reactivated = AccountEvent.Reactivated.newBuilder()
-                .setReason(reason != null ? reason : "")
-                .build();
-            
-            AccountEvent event = AccountEvent.newBuilder()
-                .setEventId(generateEventId(accountId, "reactivated"))
-                .setTimestamp(com.google.protobuf.Timestamp.newBuilder()
-                    .setSeconds(Instant.now().getEpochSecond())
-                    .setNanos(Instant.now().getNano())
-                    .build())
-                .setAccountId(accountId)
-                .setReactivated(reactivated)
-                .build();
-            
-            Message<AccountEvent> message = Message.of(event)
-                .addMetadata(OutgoingKafkaRecordMetadata.<String>builder()
-                    .withKey(accountId)
-                    .withTopic("account-events")
-                    .build());
-            
+                    .setReason(reason != null ? reason : "")
+                    .build();
+
+            AccountEvent event = buildBaseEvent(accountId, "reactivated")
+                    .setReactivated(reactivated)
+                    .build();
+
             LOG.infof("Publishing account reactivated event: accountId=%s, reason=%s", accountId, reason);
-            return accountEventEmitter.sendMessageAndForget(message);
+            return accountEventEmitter.sendAndForget(Record.of(key, event));
         } catch (Exception e) {
             LOG.errorf(e, "Error publishing account reactivated event: accountId=%s", accountId);
             throw new RuntimeException("Failed to publish account reactivated event", e);
         }
     }
-    
+
+    /**
+     * Helper to safely convert string IDs to UUIDs.
+     * Strategies:
+     * 1. Parse as standard UUID.
+     * 2. Fallback: Generate Type 3 UUID (Name-based) from bytes.
+     * This ensures "test" always maps to the same UUID, preserving compaction.
+     */
+    private UUID getUuidFromId(String id) {
+        try {
+            return UUID.fromString(id);
+        } catch (IllegalArgumentException e) {
+            // Fallback for non-standard IDs (e.g. "test", "acme-corp")
+            return UUID.nameUUIDFromBytes(id.getBytes());
+        }
+    }
+
+    /**
+     * Helper to build the base event with ID and Timestamp.
+     */
+    private AccountEvent.Builder buildBaseEvent(String accountId, String operation) {
+        return AccountEvent.newBuilder()
+                .setEventId(generateEventId(accountId, operation))
+                .setTimestamp(com.google.protobuf.Timestamp.newBuilder()
+                        .setSeconds(Instant.now().getEpochSecond())
+                        .setNanos(Instant.now().getNano())
+                        .build())
+                .setAccountId(accountId);
+    }
+
     /**
      * Generate deterministic event ID: hash(account_id + operation + timestamp_millis)
      */
